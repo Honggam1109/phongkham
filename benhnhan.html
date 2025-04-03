@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bệnh Nhân - DentalCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg fixed-top animate__animated animate__fadeInDown">
+  <div class="container">
+    <a class="navbar-brand text-primary d-flex align-items-center" href="#">
+      <i class="bi bi-tooth fs-2 me-2"></i>
+      <span class="brand-text">DentalCare - Bệnh Nhân</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="#appointments">Lịch Hẹn</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#patients">Bệnh Nhân</a></li>
+        <li class="nav-item"><a class="nav-link" href="#profile">Hồ Sơ</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle fs-5"></i> Tài Khoản
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#profile">Hồ Sơ</a></li>
+            <li><a class="dropdown-item" href="#settings">Cài Đặt</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#logout">Đăng Xuất</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section id="dashboard" class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4">Quản Lý Bệnh Nhân</h1>
+        <p class="lead">Theo dõi và quản lý thông tin bệnh nhân của phòng khám.</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Tìm kiếm bệnh nhân..." id="patientSearch">
+          <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118" alt="Quản lý bệnh nhân" class="img-fluid rounded-4">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="patients-list" class="services-section">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Danh Sách Bệnh Nhân</h2>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+        <i class="bi bi-plus-circle"></i> Thêm Bệnh Nhân
+      </button>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-primary">
+          <tr>
+            <th>Mã BN</th>
+            <th>Họ Tên</th>
+            <th>Giới Tính</th>
+            <th>Tuổi</th>
+            <th>SĐT</th>
+            <th>BHYT</th>
+            <th>Lần Cuối Khám</th>
+            <th>Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="showPatientDetail('BN001')">
+            <td>BN001</td>
+            <td>Nguyễn Văn A</td>
+            <td>Nam</td>
+            <td>32</td>
+            <td>0987654321</td>
+            <td>BH123456789</td>
+            <td>15/06/2024</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail('BN001')"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient('BN001')"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete('BN001')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+          <tr onclick="showPatientDetail('BN002')">
+            <td>BN002</td>
+            <td>Trần Thị B</td>
+            <td>Nữ</td>
+            <td>28</td>
+            <td>0912345678</td>
+            <td>BH987654321</td>
+            <td>10/06/2024</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail('BN002')"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient('BN002')"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete('BN002')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+          <tr onclick="showPatientDetail('BN003')">
+            <td>BN003</td>
+            <td>Lê Văn C</td>
+            <td>Nam</td>
+            <td>45</td>
+            <td>0967891234</td>
+            <td>BH456789123</td>
+            <td>05/06/2024</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail('BN003')"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient('BN003')"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete('BN003')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+          <tr onclick="showPatientDetail('BN004')">
+            <td>BN004</td>
+            <td>Phạm Thị D</td>
+            <td>Nữ</td>
+            <td>38</td>
+            <td>0934567891</td>
+            <td>BH789123456</td>
+            <td>01/06/2024</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail('BN004')"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient('BN004')"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete('BN004')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Trước</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Tiếp</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<!-- Patient Detail Modal -->
+<div class="modal fade" id="patientDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thông Tin Chi Tiết Bệnh Nhân</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-3 text-center">
+            <div class="position-relative mb-3">
+              <img id="patientPhoto" src="https://via.placeholder.com/200" class="img-thumbnail" alt="Patient Photo">
+              <button id="deletePhotoBtn" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="deletePhoto()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <input type="file" id="photoUpload" class="d-none" accept="image/*">
+            <button class="btn btn-outline-primary btn-sm mb-3" onclick="document.getElementById('photoUpload').click()">
+              <i class="bi bi-upload"></i> Tải lên ảnh
+            </button>
+            <h4 id="patientName">Nguyễn Văn A</h4>
+            <p class="text-muted" id="patientCode">BN001</p>
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary" onclick="editPatient(currentPatientId)"><i class="bi bi-pencil"></i> Chỉnh sửa</button>
+              <button class="btn btn-outline-danger" onclick="confirmDelete(currentPatientId)"><i class="bi bi-trash"></i> Xóa bệnh nhân</button>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <ul class="nav nav-tabs" id="patientTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button">Thông Tin Cá Nhân</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="medical-tab" data-bs-toggle="tab" data-bs-target="#medical-tab-pane" type="button">Hồ Sơ Bệnh Án</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-tab-pane" type="button">Lịch Sử Khám</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment-tab-pane" type="button">Thanh Toán</button>
+              </li>
+            </ul>
+            
+            <div class="tab-content p-3 border border-top-0 rounded-bottom" id="patientTabContent">
+              <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5>Thông Tin Cơ Bản</h5>
+                    <p><strong>Ngày sinh:</strong> <span id="patientDob">15/05/1992</span></p>
+                    <p><strong>Giới tính:</strong> <span id="patientGender">Nam</span></p>
+                    <p><strong>Nhóm máu:</strong> <span id="patientBloodType">A+</span></p>
+                    <p><strong>CMND/CCCD:</strong> <span id="patientIdNumber">123456789</span></p>
+                    <p><strong>BHYT:</strong> <span id="patientInsurance">BH123456789</span></p>
+                  </div>
+                  <div class="col-md-6">
+                    <h5>Liên Hệ</h5>
+                    <p><strong>SĐT:</strong> <span id="patientPhone">0987654321</span></p>
+                    <p><strong>Email:</strong> <span id="patientEmail">nguyenvana@gmail.com</span></p>
+                    <p><strong>Địa chỉ:</strong> <span id="patientAddress">123 Đường ABC, Quận 1, TP.HCM</span></p>
+                    <p><strong>Nghề nghiệp:</strong> <span id="patientOccupation">Kỹ sư</span></p>
+                    <p><strong>Người liên hệ khẩn cấp:</strong> <span id="patientEmergencyContact">Trần Thị B (Vợ) - 0912345678</span></p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="medical-tab-pane" role="tabpanel">
+                <h5>Thông Tin Y Tế</h5>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <p><strong>Tiền sử bệnh:</strong> <span id="patientMedicalHistory">Cao huyết áp, Dị ứng Penicillin</span></p>
+                    <p><strong>Dị ứng:</strong> <span id="patientAllergies">Penicillin, Hải sản</span></p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Thuốc đang dùng:</strong> <span id="patientCurrentMeds">Thuốc huyết áp</span></p>
+                    <p><strong>Ghi chú đặc biệt:</strong> <span id="patientSpecialNotes">Không có</span></p>
+                  </div>
+                </div>
+                
+                <h5>Hồ Sơ Răng Miệng</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Tình trạng nướu:</strong> <span id="patientGumStatus">Bình thường</span></p>
+                    <p><strong>Sâu răng:</strong> <span id="patientCavities">Răng 36, 45</span></p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Răng khôn:</strong> <span id="patientWisdomTeeth">Đã nhổ 2 răng khôn hàm dưới</span></p>
+                    <p><strong>Điều trị đang thực hiện:</strong> <span id="patientCurrentTreatment">Trám răng 36</span></p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="history-tab-pane" role="tabpanel">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ngày</th>
+                        <th>Dịch Vụ</th>
+                        <th>Bác Sĩ</th>
+                        <th>Chẩn Đoán</th>
+                        <th>Ghi Chú</th>
+                      </tr>
+                    </thead>
+                    <tbody id="medicalHistoryTable">
+                      <tr>
+                        <td>15/06/2024</td>
+                        <td>Làm sạch răng, Trám răng</td>
+                        <td>BS. Trần Văn X</td>
+                        <td>Sâu răng nhẹ</td>
+                        <td>Hẹn tái khám sau 3 tháng</td>
+                      </tr>
+                      <tr>
+                        <td>01/05/2024</td>
+                        <td>Kiểm tra định kỳ</td>
+                        <td>BS. Nguyễn Thị Y</td>
+                        <td>Răng khỏe mạnh</td>
+                        <td>Vệ sinh răng miệng tốt</td>
+                      </tr>
+                      <tr>
+                        <td>10/03/2024</td>
+                        <td>Nhổ răng khôn</td>
+                        <td>BS. Lê Văn Z</td>
+                        <td>Răng khôn mọc lệch</td>
+                        <td>Đã lành vết thương</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="payment-tab-pane" role="tabpanel">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ngày</th>
+                        <th>Dịch Vụ</th>
+                        <th>Số Tiền</th>
+                        <th>Hình Thức</th>
+                        <th>Trạng Thái</th>
+                        <th>Ghi Chú</th>
+                      </tr>
+                    </thead>
+                    <tbody id="paymentHistoryTable">
+                      <tr>
+                        <td>15/06/2024</td>
+                        <td>Làm sạch răng, Trám răng</td>
+                        <td>1,500,000 VND</td>
+                        <td>Tiền mặt</td>
+                        <td><span class="badge bg-success">Đã thanh toán</span></td>
+                        <td>BHYT chi trả 30%</td>
+                      </tr>
+                      <tr>
+                        <td>10/03/2024</td>
+                        <td>Nhổ răng khôn</td>
+                        <td>2,500,000 VND</td>
+                        <td>Chuyển khoản</td>
+                        <td><span class="badge bg-success">Đã thanh toán</span></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>01/05/2024</td>
+                        <td>Kiểm tra định kỳ</td>
+                        <td>500,000 VND</td>
+                        <td>Tiền mặt</td>
+                        <td><span class="badge bg-success">Đã thanh toán</span></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary"><i class="bi bi-printer"></i> In Hồ Sơ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Patient Modal -->
+<div class="modal fade" id="patientFormModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalTitle">Thêm Bệnh Nhân Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="patientForm">
+          <input type="hidden" id="patientId">
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formName" class="form-label">Họ và Tên *</label>
+              <input type="text" class="form-control" id="formName" required>
+            </div>
+            <div class="col-md-6">
+              <label for="formDob" class="form-label">Ngày Sinh *</label>
+              <input type="date" class="form-control" id="formDob" required>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="formGender" class="form-label">Giới Tính *</label>
+              <select class="form-select" id="formGender" required>
+                <option value="">Chọn giới tính</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="formBloodType" class="form-label">Nhóm Máu</label>
+              <select class="form-select" id="formBloodType">
+                <option value="">Không rõ</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="formIdNumber" class="form-label">CMND/CCCD</label>
+              <input type="text" class="form-control" id="formIdNumber">
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formPhone" class="form-label">Số Điện Thoại *</label>
+              <input type="tel" class="form-control" id="formPhone" required>
+            </div>
+            <div class="col-md-6">
+              <label for="formEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="formEmail">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="formAddress" class="form-label">Địa Chỉ</label>
+            <textarea class="form-control" id="formAddress" rows="2"></textarea>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formOccupation" class="form-label">Nghề Nghiệp</label>
+              <input type="text" class="form-control" id="formOccupation">
+            </div>
+            <div class="col-md-6">
+              <label for="formInsurance" class="form-label">Số BHYT</label>
+              <input type="text" class="form-control" id="formInsurance">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="formEmergencyContact" class="form-label">Người Liên Hệ Khẩn Cấp</label>
+            <input type="text" class="form-control" id="formEmergencyContact" placeholder="Tên và mối quan hệ">
+          </div>
+          
+          <div class="mb-3">
+            <label for="formEmergencyPhone" class="form-label">SĐT Người Liên Hệ Khẩn Cấp</label>
+            <input type="tel" class="form-control" id="formEmergencyPhone">
+          </div>
+          
+          <h5 class="mt-4">Thông Tin Y Tế</h5>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formMedicalHistory" class="form-label">Tiền Sử Bệnh</label>
+              <textarea class="form-control" id="formMedicalHistory" rows="2" placeholder="Các bệnh đã mắc..."></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="formAllergies" class="form-label">Dị Ứng</label>
+              <textarea class="form-control" id="formAllergies" rows="2" placeholder="Các loại dị ứng..."></textarea>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="formCurrentMeds" class="form-label">Thuốc Đang Dùng</label>
+            <textarea class="form-control" id="formCurrentMeds" rows="2" placeholder="Các loại thuốc đang sử dụng..."></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label for="formSpecialNotes" class="form-label">Ghi Chú Đặc Biệt</label>
+            <textarea class="form-control" id="formSpecialNotes" rows="2"></textarea>
+          </div>
+          
+          <h5 class="mt-4">Hồ Sơ Răng Miệng</h5>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formGumStatus" class="form-label">Tình Trạng Nướu</label>
+              <select class="form-select" id="formGumStatus">
+                <option value="">Chọn tình trạng</option>
+                <option value="Bình thường">Bình thường</option>
+                <option value="Viêm nướu nhẹ">Viêm nướu nhẹ</option>
+                <option value="Viêm nha chu">Viêm nha chu</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="formCavities" class="form-label">Sâu Răng (nếu có)</label>
+              <input type="text" class="form-control" id="formCavities" placeholder="Vị trí răng sâu...">
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="formWisdomTeeth" class="form-label">Răng Khôn</label>
+              <input type="text" class="form-control" id="formWisdomTeeth" placeholder="Tình trạng răng khôn...">
+            </div>
+            <div class="col-md-6">
+              <label for="formCurrentTreatment" class="form-label">Điều Trị Hiện Tại</label>
+              <input type="text" class="form-control" id="formCurrentTreatment" placeholder="Các điều trị đang thực hiện...">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" id="savePatientBtn">Lưu Thông Tin</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác Nhận Xóa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn xóa bệnh nhân <strong id="deletePatientName"></strong> (Mã: <strong id="deletePatientCode"></strong>)?</p>
+        <p class="text-danger">Hành động này không thể hoàn tác!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-section py-5 mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4 animate__animated animate__fadeInUp">
+        <h4 class="text-primary">DentalCare - Bác Sĩ</h4>
+        <p>Hệ thống quản lý lịch hẹn và bệnh nhân dành cho bác sĩ.</p>
+        <div class="social-links">
+          <a href="#" class="me-3"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="me-3"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="me-3"><i class="bi bi-twitter"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+        <h5>Liên Kết Nhanh</h5>
+        <ul class="list-unstyled">
+          <li><a href="#appointments">Lịch Hẹn</a></li>
+          <li><a href="#patients">Bệnh Nhân</a></li>
+          <li><a href="#profile">Hồ Sơ</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+        <h5>Thông Tin Liên Hệ</h5>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-geo-alt"></i> 123 Đường Nha Khoa, Thành Phố</li>
+          <li><i class="bi bi-telephone"></i> +1 234 567 890</li>
+          <li><i class="bi bi-envelope"></i> doctor@dentalcare.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4 pt-4 border-top">
+      <p>© 2024 DentalCare. Bảo lưu mọi quyền.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Global variable to track current patient
+  let currentPatientId = null;
+  
+  // Sample patient data (in a real app, this would come from a database)
+  const patients = {
+    'BN001': {
+      name: 'Nguyễn Văn A',
+      dob: '1992-05-15',
+      gender: 'Nam',
+      bloodType: 'A+',
+      idNumber: '123456789',
+      insurance: 'BH123456789',
+      phone: '0987654321',
+      email: 'nguyenvana@gmail.com',
+      address: '123 Đường ABC, Quận 1, TP.HCM',
+      occupation: 'Kỹ sư',
+      emergencyContact: 'Trần Thị B (Vợ) - 0912345678',
+      medicalHistory: 'Cao huyết áp, Dị ứng Penicillin',
+      allergies: 'Penicillin, Hải sản',
+      currentMeds: 'Thuốc huyết áp',
+      specialNotes: 'Không có',
+      gumStatus: 'Bình thường',
+      cavities: 'Răng 36, 45',
+      wisdomTeeth: 'Đã nhổ 2 răng khôn hàm dưới',
+      currentTreatment: 'Trám răng 36',
+      photo: 'https://via.placeholder.com/200'
+    },
+    'BN002': {
+      name: 'Trần Thị B',
+      dob: '1996-08-22',
+      gender: 'Nữ',
+      bloodType: 'B+',
+      idNumber: '987654321',
+      insurance: 'BH987654321',
+      phone: '0912345678',
+      email: 'tranthib@gmail.com',
+      address: '456 Đường XYZ, Quận 3, TP.HCM',
+      occupation: 'Giáo viên',
+      emergencyContact: 'Nguyễn Văn A (Chồng) - 0987654321',
+      medicalHistory: 'Không có',
+      allergies: 'Không có',
+      currentMeds: 'Không có',
+      specialNotes: 'Nhạy cảm với thuốc tê',
+      gumStatus: 'Viêm nướu nhẹ',
+      cavities: 'Không có',
+      wisdomTeeth: 'Chưa nhổ',
+      currentTreatment: 'Làm sạch răng định kỳ',
+      photo: 'https://via.placeholder.com/200'
+    },
+    'BN003': {
+      name: 'Lê Văn C',
+      dob: '1979-03-10',
+      gender: 'Nam',
+      bloodType: 'O+',
+      idNumber: '456789123',
+      insurance: 'BH456789123',
+      phone: '0967891234',
+      email: 'levanc@gmail.com',
+      address: '789 Đường DEF, Quận 5, TP.HCM',
+      occupation: 'Doanh nhân',
+      emergencyContact: 'Lê Thị D (Vợ) - 0934567891',
+      medicalHistory: 'Tiểu đường',
+      allergies: 'Không có',
+      currentMeds: 'Thuốc tiểu đường',
+      specialNotes: 'Cần kiểm tra đường huyết trước điều trị',
+      gumStatus: 'Viêm nha chu',
+      cavities: 'Răng 17, 26',
+      wisdomTeeth: 'Đã nhổ cả 4 răng khôn',
+      currentTreatment: 'Điều trị nha chu',
+      photo: 'https://via.placeholder.com/200'
+    },
+    'BN004': {
+      name: 'Phạm Thị D',
+      dob: '1986-11-30',
+      gender: 'Nữ',
+      bloodType: 'AB+',
+      idNumber: '789123456',
+      insurance: 'BH789123456',
+      phone: '0934567891',
+      email: 'phamthid@gmail.com',
+      address: '321 Đường GHI, Quận 10, TP.HCM',
+      occupation: 'Bác sĩ',
+      emergencyContact: 'Phạm Văn E (Chồng) - 0967891234',
+      medicalHistory: 'Hen suyễn',
+      allergies: 'Bụi, phấn hoa',
+      currentMeds: 'Thuốc hen',
+      specialNotes: 'Cần thận trọng khi dùng thuốc có codeine',
+      gumStatus: 'Bình thường',
+      cavities: 'Không có',
+      wisdomTeeth: 'Mọc thẳng, không cần nhổ',
+      currentTreatment: 'Niềng răng',
+      photo: 'https://via.placeholder.com/200'
+    }
+  };
+  
+  // Show patient detail
+  function showPatientDetail(patientId) {
+    currentPatientId = patientId;
+    const patient = patients[patientId];
+    
+    // Set basic info
+    document.getElementById('patientName').textContent = patient.name;
+    document.getElementById('patientCode').textContent = patientId;
+    document.getElementById('patientPhoto').src = patient.photo;
+    
+    // Set personal info
+    document.getElementById('patientDob').textContent = formatDate(patient.dob);
+    document.getElementById('patientGender').textContent = patient.gender;
+    document.getElementById('patientBloodType').textContent = patient.bloodType;
+    document.getElementById('patientIdNumber').textContent = patient.idNumber;
+    document.getElementById('patientInsurance').textContent = patient.insurance;
+    document.getElementById('patientPhone').textContent = patient.phone;
+    document.getElementById('patientEmail').textContent = patient.email;
+    document.getElementById('patientAddress').textContent = patient.address;
+    document.getElementById('patientOccupation').textContent = patient.occupation;
+    document.getElementById('patientEmergencyContact').textContent = patient.emergencyContact;
+    
+    // Set medical info
+    document.getElementById('patientMedicalHistory').textContent = patient.medicalHistory;
+    document.getElementById('patientAllergies').textContent = patient.allergies;
+    document.getElementById('patientCurrentMeds').textContent = patient.currentMeds;
+    document.getElementById('patientSpecialNotes').textContent = patient.specialNotes;
+    document.getElementById('patientGumStatus').textContent = patient.gumStatus;
+    document.getElementById('patientCavities').textContent = patient.cavities;
+    document.getElementById('patientWisdomTeeth').textContent = patient.wisdomTeeth;
+    document.getElementById('patientCurrentTreatment').textContent = patient.currentTreatment;
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('patientDetailModal'));
+    modal.show();
+  }
+  
+  // Edit patient
+  function editPatient(patientId) {
+    currentPatientId = patientId;
+    const patient = patients[patientId] || {};
+    
+    // Set form title
+    document.getElementById('formModalTitle').textContent = patientId ? 'Chỉnh Sửa Bệnh Nhân' : 'Thêm Bệnh Nhân Mới';
+    
+    // Fill form with patient data
+    document.getElementById('patientId').value = patientId || '';
+    document.getElementById('formName').value = patient.name || '';
+    document.getElementById('formDob').value = patient.dob || '';
+    document.getElementById('formGender').value = patient.gender || '';
+    document.getElementById('formBloodType').value = patient.bloodType || '';
+    document.getElementById('formIdNumber').value = patient.idNumber || '';
+    document.getElementById('formInsurance').value = patient.insurance || '';
+    document.getElementById('formPhone').value = patient.phone || '';
+    document.getElementById('formEmail').value = patient.email || '';
+    document.getElementById('formAddress').value = patient.address || '';
+    document.getElementById('formOccupation').value = patient.occupation || '';
+    document.getElementById('formEmergencyContact').value = patient.emergencyContact ? patient.emergencyContact.split(' - ')[0] : '';
+    document.getElementById('formEmergencyPhone').value = patient.emergencyContact ? patient.emergencyContact.split(' - ')[1] : '';
+    document.getElementById('formMedicalHistory').value = patient.medicalHistory || '';
+    document.getElementById('formAllergies').value = patient.allergies || '';
+    document.getElementById('formCurrentMeds').value = patient.currentMeds || '';
+    document.getElementById('formSpecialNotes').value = patient.specialNotes || '';
+    document.getElementById('formGumStatus').value = patient.gumStatus || '';
+    document.getElementById('formCavities').value = patient.cavities || '';
+    document.getElementById('formWisdomTeeth').value = patient.wisdomTeeth || '';
+    document.getElementById('formCurrentTreatment').value = patient.currentTreatment || '';
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('patientFormModal'));
+    modal.show();
+  }
+  
+  // Confirm delete patient
+  function confirmDelete(patientId) {
+    currentPatientId = patientId;
+    document.getElementById('deletePatientName').textContent = patients[patientId].name;
+    document.getElementById('deletePatientCode').textContent = patientId;
+    
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    modal.show();
+  }
+  
+  // Delete photo
+  function deletePhoto() {
+    if (confirm('Bạn có chắc chắn muốn xóa ảnh bệnh nhân này?')) {
+      document.getElementById('patientPhoto').src = 'https://via.placeholder.com/200';
+      // In a real app, you would also update the database
+    }
+  }
+  
+  // Format date from YYYY-MM-DD to DD/MM/YYYY
+  function formatDate(dateString) {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
+  
+  // Initialize event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    // Search functionality
+    document.getElementById('patientSearch').addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
+    });
+    
+    // Photo upload
+    document.getElementById('photoUpload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById('patientPhoto').src = event.target.result;
+          // In a real app, you would upload the image to the server
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Save patient
+    document.getElementById('savePatientBtn').addEventListener('click', function() {
+      // In a real app, you would validate and save to database
+      alert('Thông tin bệnh nhân đã được lưu!');
+      const modal = bootstrap.Modal.getInstance(document.getElementById('patientFormModal'));
+      modal.hide();
+    });
+    
+    // Confirm delete
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+      // In a real app, you would delete from database
+      alert(`Bệnh nhân ${currentPatientId} đã được xóa!`);
+      const modal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+      modal.hide();
+    });
+  });
+</script>
+</body>
+</html>
