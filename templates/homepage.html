@@ -27,10 +27,7 @@
       class="navbar navbar-expand-lg fixed-top animate__animated animate__fadeInDown"
     >
       <div class="container">
-        <a
-          class="navbar-brand text-primary d-flex align-items-center"
-          href="/"
-        >
+        <a class="navbar-brand text-primary d-flex align-items-center" href="/">
           <i class="bi bi-tooth fs-2 me-2"></i>
           <span class="brand-text">DentalCare</span>
         </a>
@@ -147,7 +144,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form class="booking-form">
+            <form class="booking-form" method="post" action="/tuvan">
               <div class="row g-3">
                 <div class="col-md-6">
                   <input
@@ -185,17 +182,19 @@
                   <input type="date" class="form-control" required />
                 </div>
               </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Đóng
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Đặt Lịch Ngay
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Đóng
-            </button>
-            <button type="submit" class="btn btn-primary">Đặt Lịch Ngay</button>
           </div>
         </div>
       </div>
