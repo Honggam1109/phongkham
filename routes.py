@@ -1,11 +1,24 @@
-from flask import Blueprint,render_template
-
+from flask import Blueprint,render_template,request,redirect,url_for
+from controllers import sqlinsert
 main_bp = Blueprint('main', __name__)
 
 # routes cua benh nhan
 @main_bp.route('/')
 def homepage():
     return render_template('homepage.html')
+@main_bp.route('/tuvan',methods=['POST'])
+def tuvan():
+    hovaten = request.form['hoten']
+    email = request.form['email']
+    sdt = request.form['sdt']
+    dichvu = request.form['dichvu']
+    ngayhen = request.form['ngayhen']
+    print(f"{hovaten} {email} {sdt} {dichvu} {ngayhen}")
+    sqlinsert("""
+    INSERT INTO formtuvan (hovaten, sdt, email, dichvu, ngayhen, ngaytao)
+    VALUES (?, ?, ?, ?, ?, datetime('now'));
+    """,(hovaten,sdt,email,dichvu,ngayhen,))
+    return redirect(url_for('main.homepage'))  # Đã sửa thành 'main.homepage'
 @main_bp.route('/bacsi')
 def bacsi():
     return render_template('bacsi.html')

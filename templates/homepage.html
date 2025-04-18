@@ -150,6 +150,7 @@
                   <input
                     type="text"
                     class="form-control"
+                    name="hoten"
                     placeholder="Họ và Tên"
                     required
                   />
@@ -159,6 +160,7 @@
                     type="email"
                     class="form-control"
                     placeholder="Email"
+                    name="email"
                     required
                   />
                 </div>
@@ -166,12 +168,13 @@
                   <input
                     type="tel"
                     class="form-control"
+                    name="sdt"
                     placeholder="Số Điện Thoại"
                     required
                   />
                 </div>
                 <div class="col-md-6">
-                  <select class="form-select" required>
+                  <select class="form-select" name="dichvu" required>
                     <option value="">Chọn Dịch Vụ</option>
                     <option>Làm Sạch Răng</option>
                     <option>Tẩy Trắng Răng</option>
@@ -179,7 +182,12 @@
                   </select>
                 </div>
                 <div class="col-12">
-                  <input type="date" class="form-control" required />
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="ngayhen"
+                    required
+                  />
                 </div>
               </div>
               <div class="modal-footer">
