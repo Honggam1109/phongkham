@@ -16,10 +16,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/index.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <style>
       .booking-hero {
         background: linear-gradient(
@@ -899,6 +896,164 @@
             );
             // In a real app, you would send the form data to the server here
           });
+      });
+    </script>
+    <script>
+      // Đối tượng để lưu trữ dữ liệu đặt lịch
+      const bookingData = {
+        service: null,
+        doctor: null,
+        date: null,
+        time: null,
+        patientInfo: {
+          name: '',
+          phone: '',
+          email: '',
+          dob: '',
+          gender: '',
+          notes: ''
+        }
+      };
+    
+      document.addEventListener("DOMContentLoaded", function () {
+        // ... (phần code hiện tại)
+    
+        // Khi chọn dịch vụ
+        document.getElementById("service-select").addEventListener("change", function() {
+          bookingData.service = {
+            id: this.value,
+            name: this.options[this.selectedIndex].text
+          };
+        });
+    
+        // Khi chọn bác sĩ
+        document.querySelectorAll(".doctor-select").forEach((item) => {
+          item.addEventListener("click", function () {
+            const doctorId = this.getAttribute("data-doctor");
+            bookingData.doctor = {
+              id: doctorId,
+              name: this.querySelector("h6").textContent,
+              specialty: this.querySelector("small").textContent
+            };
+          });
+        });
+    
+        // Khi chọn ngày
+        document.querySelectorAll(".calendar-day:not(.disabled)").forEach((item) => {
+          item.addEventListener("click", function () {
+            bookingData.date = this.textContent.replace("\n", " ");
+          });
+        });
+    
+        // Khi chọn khung giờ
+        document.querySelectorAll(".time-slot").forEach((item) => {
+          item.addEventListener("click", function () {
+            bookingData.time = this.textContent;
+          });
+        });
+    
+        // Lưu thông tin bệnh nhân khi nhập
+        document.querySelectorAll("#booking-form input, #booking-form textarea").forEach((input) => {
+          input.addEventListener("input", function() {
+            if (this.name === "gender") {
+              bookingData.patientInfo.gender = this.value;
+            } else {
+              bookingData.patientInfo[this.name] = this.value;
+            }
+          });
+        });
+    
+        // Cập nhật form khi quay lại các bước
+        function restoreFormData() {
+          // Bước 1: Dịch vụ
+          if (bookingData.service) {
+            document.getElementById("service-select").value = bookingData.service.id;
+            document.getElementById("service-details").style.display = "block";
+            document.getElementById("service-name").textContent = bookingData.service.name;
+          }
+    
+          // Bước 2: Bác sĩ
+          if (bookingData.doctor) {
+            document.querySelectorAll(".doctor-select").forEach(item => {
+              item.classList.remove("selected");
+              if (item.getAttribute("data-doctor") === bookingData.doctor.id) {
+                item.classList.add("selected");
+              }
+            });
+          }
+    
+          // Bước 3: Ngày và giờ
+          if (bookingData.date) {
+            document.querySelectorAll(".calendar-day").forEach(item => {
+              item.classList.remove("selected");
+              if (item.textContent.replace("\n", " ") === bookingData.date) {
+                item.classList.add("selected");
+              }
+            });
+          }
+    
+          if (bookingData.time) {
+            document.querySelectorAll(".time-slot").forEach(item => {
+              item.classList.remove("selected");
+              if (item.textContent === bookingData.time) {
+                item.classList.add("selected");
+              }
+            });
+          }
+    
+          // Bước 4: Thông tin bệnh nhân
+          if (bookingData.patientInfo) {
+            const info = bookingData.patientInfo;
+            document.querySelector("input[name='name']").value = info.name || "";
+            document.querySelector("input[name='phone']").value = info.phone || "";
+            document.querySelector("input[name='email']").value = info.email || "";
+            document.querySelector("input[name='dob']").value = info.dob || "";
+            if (info.gender) {
+              document.querySelector(`input[name='gender'][value='${info.gender}']`).checked = true;
+            }
+            document.querySelector("textarea[name='notes']").value = info.notes || "";
+          }
+        }
+    
+        // Thêm restoreFormData() vào các hàm quay lại
+        document.getElementById("prev-step2").addEventListener("click", function() {
+          restoreFormData();
+          // ... (phần code hiện tại)
+        });
+    
+        document.getElementById("prev-step3").addEventListener("click", function() {
+          restoreFormData();
+          // ... (phần code hiện tại)
+        });
+    
+        document.getElementById("prev-step4").addEventListener("click", function() {
+          restoreFormData();
+          // ... (phần code hiện tại)
+        });
+    
+        // Cập nhật hàm submit form
+        document.getElementById("booking-form").addEventListener("submit", function(e) {
+          e.preventDefault();
+          
+          // Lưu tất cả dữ liệu vào bookingData
+          const formData = new FormData(this);
+          bookingData.patientInfo = {
+            name: formData.get("name"),
+            phone: formData.get("phone"),
+            email: formData.get("email"),
+            dob: formData.get("dob"),
+            gender: formData.get("gender"),
+            notes: formData.get("notes")
+          };
+    
+          // Gửi dữ liệu đi (trong thực tế sẽ là AJAX call)
+          console.log("Dữ liệu đặt lịch:", bookingData);
+          alert("Đặt lịch thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.");
+          
+          // Reset form (tùy chọn)
+          // this.reset();
+          // bookingData = {}; // Reset dữ liệu
+        });
       });
     </script>
     <script

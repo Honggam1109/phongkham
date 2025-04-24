@@ -115,15 +115,19 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background-color: #add8e6; /* Light blue */
     border: none;
     padding: 12px 30px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    background-color: var(--secondary);
+    background-color: #87ceeb; /* Slightly darker blue on hover */
+}
+
+.btn-primary:active {
+    background-color: var(--secondary); /* Yellow when pressed */
 }
 
 .services-section {
