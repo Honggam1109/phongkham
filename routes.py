@@ -1,5 +1,5 @@
-from flask import Blueprint,render_template,request,redirect,url_for
-from controllers import sqlinsert
+from flask import Blueprint,render_template,request,redirect,url_for,session
+from controllers import sqlinsert,sqllogin
 main_bp = Blueprint('main', __name__)
 
 # routes cua benh nhan
@@ -38,9 +38,22 @@ def vechungtoi():
 def lamsachrang():
     return render_template('lamsachrang.html')
 #routes cua bac si
-# @main_bp.route('/')
-# def home():
-#     return render_template('home.html')
+@main_bp.route('/bacsipage')
+def home():
+    return render_template('home.html')
 @main_bp.route('/benhnhan')
 def benhnhan():
     return render_template('benhnhan.html')
+@main_bp.route('/login',methods=['POST','GET'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        bacsiid = sqllogin(username,password)
+        if bacsiid:
+            session['username'] = username
+            session['bacsiid'] = bacsiid
+            print(session['bacsiid'])
+            print(session['username'])
+            return redirect(url_for('main.home'))
+    return render_template('login.html')
