@@ -154,15 +154,18 @@
         <!-- Services Grid -->
         <div class="row" id="services-container">
             <!-- Service 1 -->
-            <div class="col-lg-4 col-md-6 service-item" data-category="preventive">
+            {% for dv in dichvus %}
+            <div class="col-lg-4 col-md-6 service-item" data-category="{{ dv.category }}">
                 <div class="service-card shadow-sm rounded">
-                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95" class="service-img" alt="Làm Sạch Răng">
+                    {% if dv.hinh_anh %}
+                        <img src="{{ url_for('static', filename='img/dichvu/' + dv.hinh_anh) }}" class="service-img" alt="Làm Sạch Răng">
+                    {% endif %}
                     <div class="service-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <h3>Làm Sạch Răng</h3>
-                            <span class="badge badge-service">Phòng ngừa</span>
+                            <h3>{{ dv.tendichvu }}</h3>
+                            <span class="badge badge-service">{{ dv.category }}</span>
                         </div>
-                        <p class="mt-2">Làm sạch chuyên nghiệp giúp loại bỏ mảng bám và cao răng, ngăn ngừa sâu răng và bệnh nướu.</p>
+                        <p class="mt-2">{{ dv.gioi_thieu }}</p>
                         <ul class="list-unstyled">
                             <li><i class="bi bi-check-circle highlight"></i> Không đau</li>
                             <li><i class="bi bi-check-circle highlight"></i> 30-45 phút</li>
@@ -170,12 +173,12 @@
                         </ul>
                     </div>
                     <div class="service-footer d-flex justify-content-between align-items-center">
-                        <span class="price-tag text-secondary">$99</span>
-                        <a href="/lamsachrang" class="btn btn-detail rounded-pill">Xem chi tiết</a>
+                        <span class="price-tag text-secondary">{{ dv.gia }} VNĐ</span>
+                        <a href="/lamsachrang/{{dv.madichvu}}" class="btn btn-detail rounded-pill">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
-
+             {% endfor %}
             <!-- Service 2 -->
             <div class="col-lg-4 col-md-6 service-item" data-category="cosmetic">
                 <div class="service-card shadow-sm rounded">
@@ -198,30 +201,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Service 3 -->
-            <div class="col-lg-4 col-md-6 service-item" data-category="preventive">
-                <div class="service-card shadow-sm rounded">
-                    <img src="https://images.unsplash.com/photo-1628777222379-bcc696ddc4c6" class="service-img" alt="Kiểm Tra Răng">
-                    <div class="service-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h3>Kiểm Tra Răng</h3>
-                            <span class="badge badge-service">Phòng ngừa</span>
-                        </div>
-                        <p class="mt-2">Kiểm tra toàn diện sức khỏe răng miệng, phát hiện sớm các vấn đề và đề xuất giải pháp điều trị.</p>
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle highlight"></i> Chụp X-quang</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Đánh giá toàn diện</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Tư vấn miễn phí</li>
-                        </ul>
-                    </div>
-                    <div class="service-footer d-flex justify-content-between align-items-center">
-                        <span class="price-tag text-secondary">$79</span>
-                        <a href="dichvu-chitiet.html?id=3" class="btn btn-detail rounded-pill">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Service 4 -->
             <div class="col-lg-4 col-md-6 service-item" data-category="restorative">
                 <div class="service-card shadow-sm rounded">
@@ -241,52 +220,6 @@
                     <div class="service-footer d-flex justify-content-between align-items-center">
                         <span class="price-tag text-secondary">$120</span>
                         <a href="dichvu-chitiet.html?id=4" class="btn btn-detail rounded-pill">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Service 5 -->
-            <div class="col-lg-4 col-md-6 service-item" data-category="orthodontic">
-                <div class="service-card shadow-sm rounded">
-                    <img src="https://images.unsplash.com/photo-1564420228450-d4f0cb3dda1a" class="service-img" alt="Niềng Răng">
-                    <div class="service-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h3>Niềng Răng</h3>
-                            <span class="badge badge-service">Chỉnh nha</span>
-                        </div>
-                        <p class="mt-2">Giải pháp chỉnh nha toàn diện giúp điều chỉnh răng lệch lạc, hô móm mang lại nụ cười hoàn hảo.</p>
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle highlight"></i> Đa dạng phương pháp</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Bác sĩ chuyên sâu</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Thanh toán linh hoạt</li>
-                        </ul>
-                    </div>
-                    <div class="service-footer d-flex justify-content-between align-items-center">
-                        <span class="price-tag text-secondary">$1,500+</span>
-                        <a href="dichvu-chitiet.html?id=5" class="btn btn-detail rounded-pill">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Service 6 -->
-            <div class="col-lg-4 col-md-6 service-item" data-category="cosmetic">
-                <div class="service-card shadow-sm rounded">
-                    <img src="https://images.unsplash.com/photo-1621347466161-89ede46552e1" class="service-img" alt="Dán Sứ Veneer">
-                    <div class="service-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h3>Dán Sứ Veneer</h3>
-                            <span class="badge badge-service">Thẩm mỹ</span>
-                        </div>
-                        <p class="mt-2">Giải pháp thẩm mỹ cao cấp giúp cải thiện hình dáng, màu sắc răng mà không cần mài nhiều răng thật.</p>
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-check-circle highlight"></i> Mỏng 0.3-0.5mm</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Màu sắc tự nhiên</li>
-                            <li><i class="bi bi-check-circle highlight"></i> Tuổi thọ 10-15 năm</li>
-                        </ul>
-                    </div>
-                    <div class="service-footer d-flex justify-content-between align-items-center">
-                        <span class="price-tag text-secondary">$500/răng</span>
-                        <a href="dichvu-chitiet.html?id=6" class="btn btn-detail rounded-pill">Xem chi tiết</a>
                     </div>
                 </div>
             </div>

@@ -1,109 +1,111 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2149"/><column_width id="4" width="0"/></tab_structure><tab_browse><table title="." custom_title="0" dock_id="4" table="0,0:"/><dock_state state="000000ff00000000fd0000000100000002000002f900000213fc0100000002fc00000000000002f90000000000fffffffaffffffff0100000003fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000011800ffffff000002580000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE dichvu (
-  dichvu_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  tendichvu TEXT,
-  category TEXT,
-  gia INTEGER,
-  gioi_thieu TEXT
-);
-
-CREATE TABLE loiich_dich_vu (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  dichvu_id INTEGER,
-  mo_ta_loi_ich TEXT,
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE quy_trinh_dich_vu (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  dichvu_id INTEGER,
-  TT_thien INTEGER,
-  tieu_de TEXT,
-  mo_ta TEXT,
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE KHNX_dichvu (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  dichvu_id INTEGER,
-  ten_KH TEXT,
-  biet_danh TEXT,
-  NX TEXT,
-  ten_anh TEXT,
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE cauhoi_dichvu (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  dichvu_id INTEGER,
-  mota TEXT,
-  traloi TEXT,
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE hinhanh_dichvu (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  dichvu_id INTEGER,
-  ten_anh TEXT,
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE bacsi (
-  bacsi_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  ten TEXT,
-  kinh_nghiem INTEGER,
-  ten_anh TEXT,
-  hoc_vi TEXT,
-  chung_chi TEXT,
-  chuyen_mon TEXT,
-  ngon_ngu TEXT
-);
-
-CREATE TABLE bacsi_tag (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  bacsi_id INTEGER,
-  mo_ta TEXT,
-  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
-);
-
-CREATE TABLE thanhtuu_bacsi (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  bacsi_id INTEGER,
-  mo_ta TEXT,
-  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
-);
-
-CREATE TABLE benhnhan (
-  benhnhan_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  tenBN TEXT,
-  gioi_tinh TEXT,
-  bacsi_id INTEGER,
-  lan_kham_cuoi TEXT, -- SQLite uses TEXT for datetime
-  ghi_chu TEXT,
-  sdt TEXT,
-  email TEXT,
-  ngaysinh TEXT,
-  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
-);
-
-CREATE TABLE lichhen (
-  lichhen_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  bacsi_id INTEGER,
-  benhnhan_id INTEGER,
-  dichvu_id INTEGER,
-  thoigianbatdau TEXT,
-  thoigianketthuc TEXT,
-  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id),
-  FOREIGN KEY (benhnhan_id) REFERENCES benhnhan(benhnhan_id),
-  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
-);
-
-CREATE TABLE bacsi_dangnhap (
-  tendn TEXT PRIMARY KEY,
-  bacsi_id INTEGER,
-  password TEXT,
-  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
-);
-
-insert into testdn VALUES
-('admin','12345',1),
-('cuong','12341',2);</sql><current_tab id="0"/></tab_sql></sqlb_project>
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2149"/><column_width id="4" width="0"/></tab_structure><tab_browse><table title="." custom_title="0" dock_id="5" table="0,0:"/><dock_state state="000000ff00000000fd0000000100000002000002f900000213fc0100000003fc00000000000002f90000000000fffffffa000000000100000003fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000ffffffff0000000000000000fc00000000000002f90000000000fffffffa000000000100000002fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500350100000000000002f90000011800ffffff000002f90000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE dichvu (
+  dichvu_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tendichvu TEXT,
+  category TEXT,
+  gia INTEGER,
+  gioi_thieu TEXT
+);
+
+CREATE TABLE loiich_dich_vu (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dichvu_id INTEGER,
+  mo_ta_loi_ich TEXT,
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE quy_trinh_dich_vu (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dichvu_id INTEGER,
+  TT_thien INTEGER,
+  tieu_de TEXT,
+  mo_ta TEXT,
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE KHNX_dichvu (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dichvu_id INTEGER,
+  ten_KH TEXT,
+  biet_danh TEXT,
+  NX TEXT,
+  ten_anh TEXT,
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE cauhoi_dichvu (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dichvu_id INTEGER,
+  mota TEXT,
+  traloi TEXT,
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE hinhanh_dichvu (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dichvu_id INTEGER,
+  ten_anh TEXT,
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE bacsi (
+  bacsi_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ten TEXT,
+  kinh_nghiem INTEGER,
+  ten_anh TEXT,
+  hoc_vi TEXT,
+  chung_chi TEXT,
+  chuyen_mon TEXT,
+  ngon_ngu TEXT
+);
+
+CREATE TABLE bacsi_tag (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  bacsi_id INTEGER,
+  mo_ta TEXT,
+  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
+);
+
+CREATE TABLE thanhtuu_bacsi (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  bacsi_id INTEGER,
+  mo_ta TEXT,
+  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
+);
+
+CREATE TABLE benhnhan (
+  benhnhan_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenBN TEXT,
+  gioi_tinh TEXT,
+  bacsi_id INTEGER,
+  lan_kham_cuoi TEXT, -- SQLite uses TEXT for datetime
+  ghi_chu TEXT,
+  sdt TEXT,
+  email TEXT,
+  ngaysinh TEXT,
+  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
+);
+
+CREATE TABLE lichhen (
+  lichhen_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  bacsi_id INTEGER,
+  benhnhan_id INTEGER,
+  dichvu_id INTEGER,
+  thoigianbatdau TEXT,
+  thoigianketthuc TEXT,
+  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id),
+  FOREIGN KEY (benhnhan_id) REFERENCES benhnhan(benhnhan_id),
+  FOREIGN KEY (dichvu_id) REFERENCES dichvu(dichvu_id)
+);
+
+CREATE TABLE bacsi_dangnhap (
+  tendn TEXT PRIMARY KEY,
+  bacsi_id INTEGER,
+  password TEXT,
+  FOREIGN KEY (bacsi_id) REFERENCES bacsi(bacsi_id)
+);
+
+insert into testdn VALUES
+('admin','12345',1),
+('cuong','12341',2);
+
+</sql><sql name="web-t5.sql" filename="C:/Users/TUF/source/repos/phongkham/db/web-t5.sql">-- Reference to file &quot;C:/Users/TUF/source/repos/phongkham/db/web-t5.sql&quot; (not supported by this version) --</sql><current_tab id="1"/></tab_sql></sqlb_project>

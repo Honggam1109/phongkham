@@ -1,9 +1,17 @@
 import sqlite3
 from dotenv import load_dotenv
 import os
+from flask import g
 
 load_dotenv()
 db_path = os.getenv('db_path')
+
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(db_path)
+        g.db.row_factory = sqlite3.Row  # Trả về dạng dict-like: row["tên_cột"]
+    return g.db
+
 def sqlinsert(sqlstring,parameter):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -17,6 +25,8 @@ def sqllogin(username,password):
     cursor.execute("select * from testdn where tendn = ?", (username,))
     data = cursor.fetchone()
     print(data)
+    cursor.close()
+    conn.close()
     if not data:
         return False
     else:
@@ -27,3 +37,69 @@ def sqllogin(username,password):
         else:
             print('dang nhap thanh cong')
             return data[2]
+def hienthidichvu():
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    query = '''
+            SELECT 
+                d.dichvu_id,
+                d.tendichvu,
+                d.category,
+                d.gia,
+                d.gioi_thieu,
+                h.ten_anh
+            FROM dichvu d
+            LEFT JOIN hinhanh_dichvu h ON d.dichvu_id = h.dichvu_id
+            where h.loai = 1 
+        '''
+    rows = conn.execute(query).fetchall()
+    conn.close()
+
+    # Gom hình ảnh lại theo từng dịch vụ
+    dichvu_dict = {}
+    for row in rows:
+        dv_id = row["dichvu_id"]
+        if dv_id not in dichvu_dict:
+            dichvu_dict[dv_id] = {
+                "madichvu": dv_id,
+                "tendichvu": row["tendichvu"],
+                "category": row["category"],
+                "gia": row["gia"],
+                "gioi_thieu": row["gioi_thieu"],
+                "hinh_anh": row["ten_anh"]
+            }
+    # Chuyển về list
+    dichvus = list(dichvu_dict.values())
+    return dichvus
+def get_dichvu_detail(dichvu_id):
+    conn = sqlite3.connect('./db/QLPK.db')
+    conn.row_factory = sqlite3.Row
+
+    # 1. Lấy thông tin dịch vụ chính
+    dichvu = conn.execute("SELECT * FROM dichvu WHERE dichvu_id = ?", (dichvu_id,)).fetchone()
+
+    # 2. Lấy lợi ích
+    loiich = conn.execute("SELECT mo_ta_loi_ich FROM loiich_dich_vu WHERE dichvu_id = ?", (dichvu_id,)).fetchall()
+
+    # 3. Lấy quy trình
+    quytrinh = conn.execute("SELECT TT_thien, tieu_de, mo_ta FROM quy_trinh_dich_vu WHERE dichvu_id = ? ORDER BY TT_thien", (dichvu_id,)).fetchall()
+
+    # 4. Lấy nhận xét khách hàng
+    nhanxet = conn.execute("SELECT ten_KH, biet_danh, NX, ten_anh FROM KHNX_dichvu WHERE dichvu_id = ?", (dichvu_id,)).fetchall()
+
+    # 5. Lấy câu hỏi thường gặp
+    faq = conn.execute("SELECT mota, traloi FROM cauhoi_dichvu WHERE dichvu_id = ?", (dichvu_id,)).fetchall()
+
+    # 6. Lấy hình ảnh
+    hinhanh = conn.execute("SELECT ten_anh FROM hinhanh_dichvu WHERE dichvu_id = ? and loai = 2", (dichvu_id,)).fetchall()
+    #7. lấy thông tin bác sĩ
+    bacsi = conn.execute("select ten, kinh_nghiem, ten_anh, hoc_vi, chuyen_mon from bacsi where bacsi_id = ?",(dichvu_id,)).fetchone()
+    return {
+        "dichvu": dict(dichvu),
+        "loi_ich": [row["mo_ta_loi_ich"] for row in loiich],
+        "quy_trinh": [dict(row) for row in quytrinh],
+        "nhan_xet": [dict(row) for row in nhanxet],
+        "cau_hoi": [dict(row) for row in faq],
+        "hinh_anh": [row["ten_anh"] for row in hinhanh],
+        "bac_si": dict(bacsi)
+    }

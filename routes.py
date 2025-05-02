@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,redirect,url_for,session
-from controllers import sqlinsert,sqllogin
+from controllers import sqlinsert,sqllogin,hienthidichvu,get_dichvu_detail
 main_bp = Blueprint('main', __name__)
 
 # routes cua benh nhan
@@ -30,13 +30,17 @@ def datlich():
     return render_template('datlich.html')
 @main_bp.route('/dichvu')
 def dichvu():
-    return render_template('dichvu.html')
+    dichvus = hienthidichvu()
+    for dv in dichvus:
+        print(dv["tendichvu"], dv["hinh_anh"])
+    return render_template('dichvu.html',dichvus = dichvus)
 @main_bp.route('/vechungtoi')
 def vechungtoi():
     return render_template('vechungtoi.html')
-@main_bp.route('/lamsachrang')
-def lamsachrang():
-    return render_template('lamsachrang.html')
+@main_bp.route('/lamsachrang/<int:id>')
+def lamsachrang(id):
+    data = get_dichvu_detail(id)
+    return render_template('lamsachrang.html',result=data)
 #routes cua bac si
 @main_bp.route('/bacsipage')
 def home():

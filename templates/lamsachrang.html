@@ -310,21 +310,21 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <span class="service-badge">Dịch vụ phòng ngừa</span>
-                <h1 class="service-title">Làm Sạch Răng Chuyên Nghiệp</h1>
+                <span class="service-badge">{{result.dichvu.category}}</span>
+                <h1 class="service-title">{{result.dichvu.tendichvu}}</h1>
                 <p class="lead">Loại bỏ mảng bám và cao răng hiệu quả, ngăn ngừa sâu răng và bệnh nướu với công nghệ hiện đại</p>
                 <div class="d-flex flex-wrap gap-3 mt-4">
                     <button class="btn btn-consult" data-bs-toggle="modal" data-bs-target="#consultModal">
                         <i class="bi bi-chat-left-text me-2"></i> Tư vấn ngay
                     </button>
-                    <a href="datlich.html" class="btn btn-book">
+                    <a href="/datlich" class="btn btn-book">
                         <i class="bi bi-calendar-check me-2"></i> Đặt lịch ngay
                     </a>
                 </div>
             </div>
             <div class="col-lg-4 text-lg-end">
                 <div class="bg-white p-4 rounded shadow-sm d-inline-block">
-                    <div class="service-price">$99</div>
+                    <div class="service-price">{{result.dichvu.gia}} VND</div>
                     <small class="text-muted">*Giá có thể thay đổi tùy tình trạng răng</small>
                 </div>
             </div>
@@ -338,52 +338,41 @@
         <div class="row">
             <div class="col-lg-8">
                 <h2 class="service-section-title">Giới thiệu dịch vụ</h2>
-                <p>Làm sạch răng chuyên nghiệp là quy trình cơ bản nhưng quan trọng nhất trong chăm sóc răng miệng định kỳ. Dịch vụ của chúng tôi sử dụng công nghệ siêu âm hiện đại giúp loại bỏ hoàn toàn cao răng và mảng bám mà không gây tổn thương đến men răng.</p>
+                <p>{{result.dichvu.gioi_thieu}}</p>
                 
-                <h3 class="mt-5 mb-3">Lợi ích khi làm sạch răng định kỳ</h3>
+                <h3 class="mt-5 mb-3">Lợi ích khi {{result.dichvu.tendichvu}}</h3>
                 <ul class="feature-list">
-                    <li>Ngăn ngừa sâu răng và viêm nướu hiệu quả</li>
-                    <li>Loại bỏ mảng bám và cao răng cứng đầu</li>
-                    <li>Phát hiện sớm các vấn đề răng miệng tiềm ẩn</li>
-                    <li>Giúp hơi thở thơm mát hơn</li>
-                    <li>Bảo vệ men răng và nướu khỏe mạnh</li>
-                    <li>Tiết kiệm chi phí điều trị về lâu dài</li>
+                    {% for loiich in result.loi_ich %}
+                    <li>{{loiich}}</li>
+                    {% endfor %}
                 </ul>
                 
                 <h2 class="service-section-title mt-5">Quy trình thực hiện</h2>
                 <div class="row">
+                    {% for buoc in result.quy_trinh %}
                     <div class="col-md-4 process-step">
-                        <div class="step-number">1</div>
-                        <h4>Khám tổng quát</h4>
-                        <p>Bác sĩ kiểm tra tổng thể tình trạng răng miệng</p>
+                        <div class="step-number">{{buoc.TT_thien}}</div>
+                        <h4>{{buoc.tieu_de}}</h4>
+                        <p>{{buoc.mo_ta}}</p>
                     </div>
-                    <div class="col-md-4 process-step">
-                        <div class="step-number">2</div>
-                        <h4>Cạo vôi răng</h4>
-                        <p>Sử dụng máy siêu âm loại bỏ cao răng nhẹ nhàng</p>
-                    </div>
-                    <div class="col-md-4 process-step">
-                        <div class="step-number">3</div>
-                        <h4>Đánh bóng</h4>
-                        <p>Làm bóng bề mặt răng với kem đánh bóng chuyên dụng</p>
-                    </div>
+                    {% endfor%}
                 </div>
                 
                 <h2 class="service-section-title mt-5">Hình ảnh thực tế</h2>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5" alt="Trước khi làm sạch">
+                            <img src="{{ url_for('static', filename='img/dichvu-before-after/' + result.hinh_anh[0]) }}" alt="Trước khi làm sạch">
                             <div class="p-3 bg-white">
-                                <h5 class="mb-0">Trước khi làm sạch</h5>
+                                <h5 class="mb-0">Trước khi {{result.dichvu.tendichvu}}</h5>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5" alt="Sau khi làm sạch">
+                            <img src="{{ url_for('static', filename='img/dichvu-before-after/' + result.hinh_anh[1]) }}" alt="Sau khi làm sạch">
                             <div class="p-3 bg-white">
-                                <h5 class="mb-0">Sau khi làm sạch</h5>
+                                <h5 class="mb-0">Sau khi {{result.dichvu.tendichvu}}</h5>
                             </div>
                         </div>
                     </div>
@@ -391,30 +380,20 @@
                 
                 <h2 class="service-section-title mt-5">Câu hỏi thường gặp</h2>
                 <div class="accordion" id="faqAccordion">
+                    {% for  cauhoi in result.cau_hoi %}
                     <div class="faq-item">
                         <div class="faq-header" id="headingOne">
                             🙂<button type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                Làm sạch răng có đau không?
+                                {{cauhoi.mota}}
                             </button>
                         </div>
                         <div id="faq1" class="collapse show" aria-labelledby="headingOne">
                             <div class="faq-body">
-                                Quy trình làm sạch răng hoàn toàn không đau. Với công nghệ siêu âm hiện đại, bạn chỉ cảm thấy hơi tê nhẹ khi cạo vôi ở những vùng răng nhạy cảm.
+                                {{cauhoi.traloi}}
                             </div>
                         </div>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-header" id="headingTwo">
-                            <button type="button" data-bs-toggle="collapse" data-bs-target="#faq2" class="collapsed">
-                                Bao lâu nên làm sạch răng một lần?
-                            </button>
-                        </div>
-                        <div id="faq2" class="collapse" aria-labelledby="headingTwo">
-                            <div class="faq-body">
-                                Nha sĩ khuyến cáo nên làm sạch răng định kỳ 6 tháng/lần. Tuy nhiên, với người hút thuốc, uống nhiều cà phê hoặc có tiền sử bệnh nướu, nên thực hiện 3-4 tháng/lần.
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <div class="faq-item">
                         <div class="faq-header" id="headingThree">
                             <button type="button" data-bs-toggle="collapse" data-bs-target="#faq3" class="collapsed">
@@ -475,10 +454,10 @@
                     
                     <h4 class="service-section-title">Bác sĩ chuyên khoa</h4>
                     <div class="doctor-card">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="doctor-img" alt="Bác sĩ Nguyễn Thị Hương">
-                        <h5>Bác sĩ Nguyễn Thị Hương</h5>
-                        <p class="text-muted">Chuyên gia nha chu</p>
-                        <p class="small">15 năm kinh nghiệm trong lĩnh vực chăm sóc răng miệng tổng quát</p>
+                        <img src="{{ url_for('static', filename='img/bacsi/' + result.bac_si.ten_anh) }}" class="doctor-img">
+                        <h5>Bác sĩ {{result.bac_si.ten}}</h5>
+                        <p class="text-muted">{{result.bac_si.hoc_vi}}</p>
+                        <p class="small">{{result.bac_si.kinh_nghiem}} năm kinh nghiệm trong lĩnh vực {{result.bac_si.chuyen_mon}}</p>
                         <button class="btn btn-sm btn-primary">Xem hồ sơ</button>
                     </div>
                     
@@ -500,30 +479,20 @@
             <div class="col-12">
                 <h2 class="service-section-title">Khách hàng nói gì về chúng tôi</h2>
                 <div class="row">
+                    {% for kh in result.nhan_xet %}
                     <div class="col-md-4">
                         <div class="testimonial-card">
-                            <p>"Tôi rất hài lòng với dịch vụ làm sạch răng tại DentalCare. Bác sĩ thực hiện rất nhẹ nhàng, không đau như tôi từng nghĩ. Răng tôi sạch sẽ và trắng sáng hơn hẳn."</p>
+                            <p>"{{kh.NX}}"</p>
                             <div class="testimonial-author">
-                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Chị Ngọc Anh">
+                                <img src="{{ url_for('static', filename='img/khachhang/' + kh.ten_anh) }}" alt="Chị Ngọc Anh">
                                 <div>
-                                    <h6 class="mb-0">Chị Ngọc Anh</h6>
-                                    <small class="text-muted">Khách hàng thân thiết</small>
+                                    <h6 class="mb-0">{{kh.ten_KH}}</h6>
+                                    <small class="text-muted">{{kh.biet_danh}}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <p>"Lần đầu tiên làm sạch răng nhưng trải nghiệm rất tốt. Nhân viên tư vấn nhiệt tình, bác sĩ giải thích rõ từng bước. Tôi sẽ quay lại đều đặn 6 tháng/lần như lời khuyên."</p>
-                            <div class="testimonial-author">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Anh Minh Đức">
-                                <div>
-                                    <h6 class="mb-0">Anh Minh Đức</h6>
-                                    <small class="text-muted">Khách hàng mới</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                     <div class="col-md-4">
                         <div class="testimonial-card">
                             <p>"Con tôi 8 tuổi rất sợ đi nha sĩ, nhưng tại DentalCare các cô đã làm bé thoải mái. Bé còn được tặng sticker sau khi hoàn thành. Cảm ơn đội ngũ rất nhiều!"</p>
@@ -555,7 +524,7 @@
                         <p class="card-text">Công nghệ tẩy trắng hiện đại giúp răng trắng sáng hơn từ 3-8 tông màu</p>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <a href="taytrangrang.html" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
+                        <a href="/lamsachrang/2" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
@@ -567,7 +536,7 @@
                         <p class="card-text">Phục hồi răng sâu, răng sứt mẻ với vật liệu composite màu răng tự nhiên</p>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <a href="tramrang.html" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
+                        <a href="/lamsachrang/4" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
@@ -579,7 +548,7 @@
                         <p class="card-text">Kiểm tra toàn diện sức khỏe răng miệng và tư vấn điều trị chuyên sâu</p>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <a href="khamtongquat.html" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
+                        <a href="/lamsachrang/5" class="btn btn-outline-primary btn-detail">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
@@ -595,7 +564,7 @@
                 <p class="mb-lg-0">Đặt lịch hẹn ngay hôm nay để được thăm khám bởi đội ngũ bác sĩ chuyên môn cao</p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <a href="datlich.html" class="btn btn-light btn-lg rounded-pill px-4">
+                <a href="/datlich" class="btn btn-light btn-lg rounded-pill px-4">
                     <i class="bi bi-calendar-check me-2"></i> Đặt lịch ngay
                 </a>
             </div>
