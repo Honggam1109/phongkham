@@ -276,12 +276,10 @@
               <h3 class="booking-card-title">1. Chọn Dịch Vụ</h3>
               <div class="mb-4">
                 <label class="form-label">Dịch vụ bạn quan tâm</label>
-                <select class="form-select" id="service-select">
-                  <option value="cleaning">Làm sạch răng chuyên nghiệp</option>
-                  <option value="whitening">Tẩy trắng răng</option>
-                  <option value="filling">Trám răng thẩm mỹ</option>
-                  <option value="checkup">Khám tổng quát</option>
-                  <option value="other">Dịch vụ khác</option>
+                <select class="form-select" id="service-select" name="dichvu_id">
+                  {% for dv in dichvu_list %}
+                    <option value="{{ dv['dichvu_id'] }}">{{ dv['tendichvu'] }}</option>
+                  {% endfor %}
                 </select>
               </div>
 

@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,redirect,url_for,session
-from controllers import sqlinsert,sqllogin,hienthidichvu,get_dichvu_detail
+from controllers import sqlinsert,sqllogin,hienthidichvu,get_dichvu_detail,get_all_bacsi_detail,get_db
 main_bp = Blueprint('main', __name__)
 
 # routes cua benh nhan
@@ -21,13 +21,24 @@ def tuvan():
     return redirect(url_for('main.homepage'))  # Đã sửa thành 'main.homepage'
 @main_bp.route('/bacsi')
 def bacsi():
-    return render_template('bacsi.html')
+    bacsidata = get_all_bacsi_detail()
+    return render_template('bacsi.html', bacsis = bacsidata)
 @main_bp.route('/blog')
 def blog():
     return render_template('blog.html')
+@main_bp.route('/get_price/<int:dichvu_id>')
+def get_price(dichvu_id):
+    db = get_db()
+    result = db.execute("SELECT gia FROM dichvu WHERE dichvu_id = ?", (dichvu_id,)).fetchone()
+    if result:
+        return {"gia": result['gia']}
+    else:
+        return {"gia": 0}
 @main_bp.route('/datlich')
 def datlich():
-    return render_template('datlich.html')
+    db = get_db()
+    dichvu_list = db.execute("SELECT dichvu_id, tendichvu FROM dichvu").fetchall()
+    return render_template('datlich.html', dichvu_list=dichvu_list)
 @main_bp.route('/dichvu')
 def dichvu():
     dichvus = hienthidichvu()

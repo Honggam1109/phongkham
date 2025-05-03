@@ -103,3 +103,27 @@ def get_dichvu_detail(dichvu_id):
         "hinh_anh": [row["ten_anh"] for row in hinhanh],
         "bac_si": dict(bacsi)
     }
+def get_all_bacsi_detail():
+    conn = sqlite3.connect('./db/QLPK.db')
+    conn.row_factory = sqlite3.Row
+
+    # 1. Lấy thông tin bacsi
+    bacsis = conn.execute("SELECT * FROM bacsi ").fetchall()
+    result = []
+    for bs in bacsis:
+        bacsi_id = bs["bacsi_id"]
+        # 2. Lấy tag
+        tags = conn.execute("SELECT mo_ta FROM bacsi_tag WHERE bacsi_id = ?", (bacsi_id,)).fetchall()
+
+        # 3. Lấy thanh tuu
+        thanhtuus = conn.execute("SELECT mo_ta FROM thanhtuu_bacsi WHERE bacsi_id = ? ", (bacsi_id,)).fetchall()
+
+        # 4. lấy kinh nghiem
+        kinhnghiem = conn.execute("SELECT mota FROM kinhnghiem_bacsi WHERE bacsi_id = ? ", (bacsi_id,)).fetchall()
+        result.append({
+            **dict(bs),
+            "tags": [row["mo_ta"] for row in tags],
+            "thanhtuu": [row["mo_ta"] for row in thanhtuus],
+            "kinhnghiems":[row["mota"] for row in kinhnghiem]
+        })
+    return result

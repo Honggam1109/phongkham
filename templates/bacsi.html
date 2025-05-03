@@ -40,7 +40,7 @@
         .doctor-card {
             background: white;
             border-radius: var(--radius);
-            padding: 25px;
+            padding: 35px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: all 0.3s ease;
@@ -250,26 +250,26 @@
         <h2 class="section-title">Bác Sĩ Nha Khoa Tổng Quát</h2>
         <div class="row">
             <!-- Doctor 1 -->
+            {% for bacsi in bacsis[0:3] %}
             <div class="col-lg-4 col-md-6">
                 <div class="doctor-card">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="doctor-img" alt="Bác sĩ Nguyễn Thị Hương">
-                    <h3 class="doctor-name">Bác sĩ Nguyễn Thị Hương</h3>
-                    <p class="doctor-specialty">Chuyên gia nha chu</p>
+                    <img src="{{ url_for('static', filename='img/bacsi/' + bacsi.ten_anh) }}" class="doctor-img" >
+                    <h3 class="doctor-name">Bác sĩ {{bacsi.ten}}</h3>
+                    <p class="doctor-specialty">Chuyên gia {{bacsi.chuyen_mon}}</p>
                     <div class="doctor-experience">
-                        <span class="experience-badge">15 năm kinh nghiệm</span>
+                        <span class="experience-badge">{{bacsi.kinh_nghiem}} năm kinh nghiệm</span>
                     </div>
                     <div class="doctor-skills">
-                        <span class="skill-tag">Làm sạch răng</span>
-                        <span class="skill-tag">Điều trị nha chu</span>
-                        <span class="skill-tag">Trám răng</span>
-                        <span class="skill-tag">Nhổ răng</span>
+                        {% for tag in bacsi.tags %}
+                        <span class="skill-tag">{{tag}}</span>
+                        {% endfor %}
                     </div>
-                    <button class="btn btn-profile" data-bs-toggle="modal" data-bs-target="#doctorModal1">
+                    <button class="btn btn-profile" data-bs-toggle="modal" data-bs-target="#doctorModal{{bacsi.bacsi_id}}">
                         <i class="bi bi-person-lines-fill me-2"></i> Xem hồ sơ
                     </button>
                 </div>
             </div>
-            
+            {% endfor %}
             <!-- Doctor 2 -->
             <div class="col-lg-4 col-md-6">
                 <div class="doctor-card">
@@ -319,47 +319,26 @@
     <div class="container">
         <h2 class="section-title">Bác Sĩ Chuyên Khoa Sâu</h2>
         <div class="row">
-            <!-- Doctor 4 -->
+            {% for bacsi in bacsis[3:6] %}
             <div class="col-lg-4 col-md-6">
                 <div class="doctor-card">
-                    <img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d" class="doctor-img" alt="Bác sĩ Phạm Quốc Bảo">
-                    <h3 class="doctor-name">Bác sĩ Phạm Quốc Bảo</h3>
-                    <p class="doctor-specialty">Chuyên gia phẫu thuật</p>
+                    <img src="{{ url_for('static', filename='img/bacsi/' + bacsi.ten_anh) }}" class="doctor-img" >
+                    <h3 class="doctor-name">Bác sĩ {{bacsi.ten}}</h3>
+                    <p class="doctor-specialty">Chuyên gia {{bacsi.chuyen_mon}}</p>
                     <div class="doctor-experience">
-                        <span class="experience-badge">18 năm kinh nghiệm</span>
+                        <span class="experience-badge">{{bacsi.kinh_nghiem}} năm kinh nghiệm</span>
                     </div>
                     <div class="doctor-skills">
-                        <span class="skill-tag">Nhổ răng khôn</span>
-                        <span class="skill-tag">Cấy ghép Implant</span>
-                        <span class="skill-tag">Phẫu thuật nha chu</span>
-                        <span class="skill-tag">Chỉnh hình xương</span>
+                        {% for tag in bacsi.tags %}
+                        <span class="skill-tag">{{tag}}</span>
+                        {% endfor %}
                     </div>
-                    <button class="btn btn-profile" data-bs-toggle="modal" data-bs-target="#doctorModal4">
+                    <button class="btn btn-profile" data-bs-toggle="modal" data-bs-target="#doctorModal{{bacsi.bacsi_id}}">
                         <i class="bi bi-person-lines-fill me-2"></i> Xem hồ sơ
                     </button>
                 </div>
             </div>
-            
-            <!-- Doctor 5 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="doctor-card">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="doctor-img" alt="Bác sĩ Hoàng Thị Lan">
-                    <h3 class="doctor-name">Bác sĩ Hoàng Thị Lan</h3>
-                    <p class="doctor-specialty">Chuyên gia trẻ em</p>
-                    <div class="doctor-experience">
-                        <span class="experience-badge">9 năm kinh nghiệm</span>
-                    </div>
-                    <div class="doctor-skills">
-                        <span class="skill-tag">Nha khoa trẻ em</span>
-                        <span class="skill-tag">Dự phòng sâu răng</span>
-                        <span class="skill-tag">Chỉnh nha trẻ em</span>
-                        <span class="skill-tag">Nhổ răng sữa</span>
-                    </div>
-                    <button class="btn btn-profile" data-bs-toggle="modal" data-bs-target="#doctorModal5">
-                        <i class="bi bi-person-lines-fill me-2"></i> Xem hồ sơ
-                    </button>
-                </div>
-            </div>
+            {% endfor %}
             
             <!-- Doctor 6 -->
             <div class="col-lg-4 col-md-6">
@@ -483,58 +462,10 @@
 </footer>
 
 <!-- Doctor Modals -->
-<!-- Modal 1 -->
-<div class="modal fade" id="doctorModal1" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Hồ Sơ Bác Sĩ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4 text-center">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="img-fluid rounded-circle mb-3" alt="Bác sĩ Nguyễn Thị Hương" style="width: 200px; height: 200px; object-fit: cover;">
-                        <h4>Bác sĩ Nguyễn Thị Hương</h4>
-                        <p class="text-primary">Chuyên gia nha chu</p>
-                        <div class="d-flex justify-content-center gap-2 mb-3">
-                            <span class="badge bg-primary">15 năm kinh nghiệm</span>
-                            <span class="badge bg-secondary">Bệnh viện Răng Hàm Mặt TW</span>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <h5 class="border-bottom pb-2">Thông Tin Chuyên Môn</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><strong>Học vị:</strong> Tiến sĩ Nha khoa - Đại học Y Hà Nội</li>
-                            <li class="mb-2"><strong>Chứng chỉ:</strong> Chuyên khoa Nha chu - Đại học Paris Descartes</li>
-                            <li class="mb-2"><strong>Kinh nghiệm:</strong> 
-                                <ul>
-                                    <li>Trưởng khoa Nha chu - Bệnh viện Răng Hàm Mặt TW (2015-2020)</li>
-                                    <li>Bác sĩ điều trị tại Phòng khám Nha khoa Quốc tế (2010-2015)</li>
-                                </ul>
-                            </li>
-                            <li class="mb-2"><strong>Chuyên môn:</strong> Điều trị nha chu, ghép xương, ghép nướu, làm sạch răng chuyên sâu</li>
-                            <li class="mb-2"><strong>Ngôn ngữ:</strong> Tiếng Việt, Tiếng Anh, Tiếng Pháp</li>
-                        </ul>
-                        
-                        <h5 class="border-bottom pb-2 mt-4">Thành Tựu</h5>
-                        <ul>
-                            <li>Giải thưởng "Bác sĩ nha khoa xuất sắc" năm 2019</li>
-                            <li>Nghiên cứu về điều trị nha chu không phẫu thuật đăng trên tạp chí quốc tế</li>
-                            <li>Diễn giả tại nhiều hội thảo nha khoa trong nước và quốc tế</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Modal 2 -->
-<div class="modal fade" id="doctorModal2" tabindex="-1">
+<!-- Modal 1 -->
+{% for bacsi in bacsis %}
+<div class="modal fade" id="doctorModal{{bacsi.bacsi_id}}" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -544,34 +475,34 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 text-center">
-                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d" class="img-fluid rounded-circle mb-3" alt="Bác sĩ Trần Văn Minh" style="width: 200px; height: 200px; object-fit: cover;">
-                        <h4>Bác sĩ Trần Văn Minh</h4>
-                        <p class="text-primary">Chuyên gia phục hình răng</p>
+                        <img src="{{ url_for('static', filename='img/bacsi/' + bacsi.ten_anh) }}" class="img-fluid rounded-circle mb-3" alt="Bác sĩ Nguyễn Thị Hương" style="width: 200px; height: 200px; object-fit: cover;">
+                        <h4>Bác sĩ {{bacsi.ten}}</h4>
+                        <p class="text-primary">Chuyên gia {{bacsi.chuyen_mon}}</p>
                         <div class="d-flex justify-content-center gap-2 mb-3">
-                            <span class="badge bg-primary">12 năm kinh nghiệm</span>
-                            <span class="badge bg-secondary">Đại học Y Dược TP.HCM</span>
+                            <span class="badge bg-primary">{{bacsi.kinh_nghiem}} năm kinh nghiệm</span>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <h5 class="border-bottom pb-2">Thông Tin Chuyên Môn</h5>
                         <ul class="list-unstyled">
-                            <li class="mb-2"><strong>Học vị:</strong> Thạc sĩ Nha khoa - Đại học Y Dược TP.HCM</li>
-                            <li class="mb-2"><strong>Chứng chỉ:</strong> Phục hình răng thẩm mỹ - Đại học Harvard</li>
+                            <li class="mb-2"><strong>Học vị:</strong> {{bacsi.hoc_vi}}</li>
+                            <li class="mb-2"><strong>Chứng chỉ:</strong> {{bacsi.chung_chi}}</li>
                             <li class="mb-2"><strong>Kinh nghiệm:</strong> 
                                 <ul>
-                                    <li>Giảng viên Bộ môn Phục hình - Đại học Y Dược TP.HCM</li>
-                                    <li>Bác sĩ điều trị tại Bệnh viện Răng Hàm Mặt TP.HCM</li>
+                                    {% for kn in bacsi.kinhnghiems %}
+                                         <li>{{kn}}</li>
+                                    {% endfor%}
                                 </ul>
                             </li>
-                            <li class="mb-2"><strong>Chuyên môn:</strong> Răng sứ thẩm mỹ, cầu răng, mão răng, phục hình implant</li>
-                            <li class="mb-2"><strong>Ngôn ngữ:</strong> Tiếng Việt, Tiếng Anh</li>
+                            <li class="mb-2"><strong>Chuyên môn:</strong>{{bacsi.chuyen_mon}}</li>
+                            <li class="mb-2"><strong>Ngôn ngữ:</strong> {{bacsi.ngon_ngu}}</li>
                         </ul>
                         
                         <h5 class="border-bottom pb-2 mt-4">Thành Tựu</h5>
                         <ul>
-                            <li>Tiên phong ứng dụng công nghệ CAD/CAM trong phục hình răng</li>
-                            <li>Đào tạo hơn 100 bác sĩ về phục hình răng thẩm mỹ</li>
-                            <li>Nhận giải "Sáng tạo trong nha khoa" năm 2020</li>
+                            {% for tt in bacsi.thanhtuu %}
+                            <li>{{tt}}</li>
+                            {% endfor%}
                         </ul>
                     </div>
                 </div>
@@ -582,6 +513,9 @@
         </div>
     </div>
 </div>
+{% endfor %}
+<!-- Modal 2 -->
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
