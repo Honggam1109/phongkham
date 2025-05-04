@@ -1,5 +1,6 @@
-from flask import Blueprint,render_template,request,redirect,url_for,session
-from controllers import sqlinsert,sqllogin,hienthidichvu,get_dichvu_detail,get_all_bacsi_detail,get_db
+from flask import Blueprint,render_template,request,redirect,url_for,session,jsonify
+from controllers import sqlinsert,sqllogin,hienthidichvu,get_dichvu_detail,get_all_bacsi_detail,get_db,laylichbanbacsi
+from datetime import datetime
 main_bp = Blueprint('main', __name__)
 
 # routes cua benh nhan
@@ -26,19 +27,57 @@ def bacsi():
 @main_bp.route('/blog')
 def blog():
     return render_template('blog.html')
-@main_bp.route('/get_price/<int:dichvu_id>')
-def get_price(dichvu_id):
+@main_bp.route('/api/get_price')
+def get_price():
+    dichvu_id = request.args.get('dichvu_id')
     db = get_db()
     result = db.execute("SELECT gia FROM dichvu WHERE dichvu_id = ?", (dichvu_id,)).fetchone()
     if result:
         return {"gia": result['gia']}
     else:
         return {"gia": 0}
+# @main_bp.route('/api/get-busy-times')
+# def get_busy_times():
+#     result = laylichbanbacsi()
+#     return jsonify(result)
+@main_bp.route("/api/unavailable-times")
+def get_unavailable_times():
+    doctor_id = request.args.get("doctor_id")
+    date_str = request.args.get("date")  # YYYY-MM-DD
+
+    if not doctor_id or not date_str:
+        return jsonify({"error": "Missing parameters"}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Lấy tất cả giờ bắt đầu trong ngày đó với bác sĩ
+    query = """
+        SELECT thoigianbatdau FROM lichhen
+        WHERE bacsi_id = ? AND date(thoigianbatdau) = ?
+    """
+    cursor.execute(query, (doctor_id, date_str))
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    # Trả về danh sách giờ đã bận dưới dạng ["09:00", "10:00"]
+    unavailable_times = []
+    for row in rows:
+        time_str = row["thoigianbatdau"]
+        try:
+            dt = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            dt = datetime.strptime(time_str, "%Y-%m-%d %H:%M")
+        unavailable_times.append(dt.strftime("%H:%M"))
+
+    return jsonify(unavailable_times)
 @main_bp.route('/datlich')
 def datlich():
     db = get_db()
     dichvu_list = db.execute("SELECT dichvu_id, tendichvu FROM dichvu").fetchall()
-    return render_template('datlich.html', dichvu_list=dichvu_list)
+    bacsi_list = db.execute("SELECT * FROM bacsi").fetchall()
+    return render_template('datlich.html', dichvu_list=dichvu_list,bacsi_list = bacsi_list)
 @main_bp.route('/dichvu')
 def dichvu():
     dichvus = hienthidichvu()

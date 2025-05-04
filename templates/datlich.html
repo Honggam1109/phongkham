@@ -166,7 +166,6 @@
       .doctor-select.selected img {
         border-color: var(--primary);
       }
-
       .calendar-day {
         text-align: center;
         padding: 10px;
@@ -176,7 +175,11 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
-
+      .calendar-grid {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
       .calendar-day:hover,
       .calendar-day.selected {
         background-color: var(--primary);
@@ -187,6 +190,13 @@
         opacity: 0.5;
         cursor: not-allowed;
         background-color: var(--border);
+        pointer-events: none;
+      }
+      .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: var(--border);
+        pointer-events: none;
       }
 
       @media (max-width: 768px) {
@@ -276,9 +286,15 @@
               <h3 class="booking-card-title">1. Chọn Dịch Vụ</h3>
               <div class="mb-4">
                 <label class="form-label">Dịch vụ bạn quan tâm</label>
-                <select class="form-select" id="service-select" name="dichvu_id">
+                <select
+                  class="form-select"
+                  id="service-select"
+                  name="dichvu_id"
+                >
                   {% for dv in dichvu_list %}
-                    <option value="{{ dv['dichvu_id'] }}">{{ dv['tendichvu'] }}</option>
+                  <option value="{{ dv['dichvu_id'] }}">
+                    {{ dv['tendichvu'] }}
+                  </option>
                   {% endfor %}
                 </select>
               </div>
@@ -311,21 +327,22 @@
               <h3 class="booking-card-title">2. Chọn Bác Sĩ</h3>
               <div class="mb-4">
                 <label class="form-label">Chọn bác sĩ bạn muốn đặt lịch</label>
-
-                <div class="doctor-select selected" data-doctor="1">
+                {% for bacsi in bacsi_list %}
+                <div class="doctor-select" data-doctor="{{bacsi['bacsi_id']}}">
                   <img
-                    src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2"
+                    src="{{ url_for('static', filename='img/bacsi/' + bacsi['ten_anh']) }}"
                     alt="Bác sĩ Nguyễn Thị Hương"
                   />
                   <div>
-                    <h6 class="mb-1">Bác sĩ Nguyễn Thị Hương</h6>
+                    <h6 class="mb-1">Bác sĩ {{bacsi['ten']}}</h6>
                     <small class="text-muted"
-                      >Chuyên gia nha chu - 15 năm kinh nghiệm</small
+                      >Chuyên gia {{bacsi['chuyen_mon']}} -
+                      {{bacsi['kinh_nghiem']}} năm kinh nghiệm</small
                     >
                   </div>
                 </div>
-
-                <div class="doctor-select" data-doctor="2">
+                {% endfor %}
+                <div class="doctor-select selected" data-doctor="2">
                   <img
                     src="https://images.unsplash.com/photo-1622253692010-333f2da6031d"
                     alt="Bác sĩ Trần Văn Minh"
@@ -368,34 +385,75 @@
 
               <div class="mb-4">
                 <label class="form-label">Chọn ngày hẹn</label>
-                <div class="d-flex flex-wrap mb-3">
-                  <div class="calendar-day selected">Thứ 2<br />15/07</div>
-                  <div class="calendar-day">Thứ 3<br />16/07</div>
-                  <div class="calendar-day">Thứ 4<br />17/07</div>
-                  <div class="calendar-day">Thứ 5<br />18/07</div>
-                  <div class="calendar-day">Thứ 6<br />19/07</div>
-                  <div class="calendar-day disabled">Thứ 7<br />20/07</div>
-                  <div class="calendar-day disabled">CN<br />21/07</div>
-                </div>
+                <div id="calendar-days" class="calendar-grid"></div>
               </div>
 
               <div class="mb-4">
                 <label class="form-label">Chọn khung giờ</label>
                 <div>
-                  <div class="time-slot selected">08:00 - 08:30</div>
-                  <div class="time-slot">08:30 - 09:00</div>
-                  <div class="time-slot">09:00 - 09:30</div>
-                  <div class="time-slot">09:30 - 10:00</div>
-                  <div class="time-slot">10:00 - 10:30</div>
-                  <div class="time-slot">10:30 - 11:00</div>
-                  <div class="time-slot">11:00 - 11:30</div>
-                  <div class="time-slot">13:30 - 14:00</div>
-                  <div class="time-slot">14:00 - 14:30</div>
-                  <div class="time-slot">14:30 - 15:00</div>
-                  <div class="time-slot">15:00 - 15:30</div>
-                  <div class="time-slot">15:30 - 16:00</div>
-                  <div class="time-slot">16:00 - 16:30</div>
-                  <div class="time-slot">16:30 - 17:00</div>
+                  <div
+                    class="time-slot"
+                    data-time="08:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    08:00 - 09:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="09:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    09:00 - 10:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="10:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    10:00 - 11:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="11:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    11:00 - 12:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="12:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    12:00 - 13:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="13:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    13:00 - 14:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="14:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    14:00 - 15:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="15:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    15:00 - 16:00
+                  </div>
+                  <div
+                    class="time-slot"
+                    data-time="16:00"
+                    data-datetime="2025-05-05 09:00"
+                  >
+                    16:00 - 17:00
+                  </div>
                 </div>
               </div>
 
@@ -413,7 +471,7 @@
             <div class="booking-card" id="step4" style="display: none">
               <h3 class="booking-card-title">4. Thông Tin Bệnh Nhân</h3>
 
-              <form id="booking-form">
+              <form id="booking-form" action="/dat-lich" method="post">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
@@ -423,12 +481,10 @@
                       <input type="text" class="form-control" required />
                     </div>
                   </div>
-                  <input
-                    type="hidden"
-                    id="selected-doctor"
-                    name="doctor"
-                    value="1"
-                  />
+                  <input type="hidden" id="selected-doctor" name="doctor" />
+                  <input type="hidden" name="dichvu_id" id="hidden-dichvu-id" />
+                  <input type="hidden" name="select-date" id="ngay-hen" />
+
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label"
@@ -728,12 +784,135 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // lấy id của dịch vụ từ bước 1 để gửi vào trong form
+      const select = document.getElementById("service-select");
+      const hiddenInput = document.getElementById("hidden-dichvu-id");
+      select.addEventListener("change", function () {
+        hiddenInput.value = select.value;
+      });
+      // lấy id của bác sĩ từ bước 2
       document.querySelectorAll(".doctor-select").forEach((item) => {
         item.addEventListener("click", function () {
           const doctorId = this.getAttribute("data-doctor");
           document.getElementById("selected-doctor").value = doctorId;
         });
       });
+      // xử lý khung lịch bận của bác sĩ
+      // function busyTimesDoctor() {
+      //   document.querySelectorAll(".doctor-select").forEach((item) => {
+      //     item.addEventListener("click", function () {
+      //       document
+      //         .querySelectorAll(".doctor-select")
+      //         .forEach((doc) => doc.classList.remove("selected"));
+      //       this.classList.add("selected");
+
+      //       const doctorId = this.getAttribute("data-doctor");
+
+      //       // Gọi API lấy lịch bận
+      //       fetch(`/api/get-busy-times?doctor_id=${doctorId}`)
+      //         .then((res) => res.json())
+      //         .then((data) => {
+      //           disableBusyTimes(data); // xử lý khung giờ bận
+      //         });
+      //     });
+      //   });
+      // }
+      // busyTimesDoctor();
+
+      // function disableBusyTimes(busyTimes) {
+      //   // Reset toàn bộ slot
+      //   document.querySelectorAll(".time-slot").forEach((slot) => {
+      //     slot.classList.remove("disabled");
+      //     slot.disabled = false;
+      //   });
+
+      //   // Disable các slot bị trùng với lịch bận
+      //   busyTimes.forEach((busy) => {
+      //     const start = new Date(busy.start);
+      //     const end = new Date(busy.end);
+
+      //     document.querySelectorAll(".time-slot").forEach((slot) => {
+      //       const slotTime = new Date(slot.getAttribute("data-datetime"));
+      //       if (slotTime >= start && slotTime < end) {
+      //         slot.classList.add("disabled");
+      //         slot.disabled = true;
+      //       }
+      //     });
+      //   });
+      // }
+      // tự động cập nhật các ngày tiếp theo
+      function generateCalendarDays() {
+        const container = document.getElementById("calendar-days");
+        container.innerHTML = ""; // Xóa nội dung cũ nếu có
+
+        const today = new Date();
+        const weekdays = [
+          "Chủ Nhật",
+          "Thứ Hai",
+          "Thứ Ba",
+          "Thứ Tư",
+          "Thứ Năm",
+          "Thứ Sáu",
+          "Thứ Bảy",
+        ];
+
+        for (let i = 0; i < 7; i++) {
+          const date = new Date();
+          date.setDate(today.getDate() + i);
+
+          const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
+          const day = date.getDate();
+          const month = date.getMonth() + 1;
+          const weekday = weekdays[date.getDay()];
+
+          const div = document.createElement("div");
+          div.classList.add("calendar-day");
+          div.setAttribute("data-date", dateStr);
+          div.innerHTML = `<strong>${weekday}</strong><br>${day}/${month}`;
+
+          container.appendChild(div);
+        }
+
+        attachDayClickHandlers();
+      }
+
+      function attachDayClickHandlers() {
+        document.querySelectorAll(".calendar-day").forEach((day) => {
+          day.addEventListener("click", function () {
+            // Bỏ selected cũ
+            document
+              .querySelectorAll(".calendar-day")
+              .forEach((d) => d.classList.remove("selected"));
+            this.classList.add("selected");
+
+            const selectedDate = this.getAttribute("data-date");
+            const doctorId = document.getElementById("selected-doctor").value;
+            // Cập nhật datetime cho time slots
+            updateTimeSlots(doctorId, selectedDate);
+          });
+        });
+        function updateTimeSlots(doctorId, selectedDate) {
+          // Giả sử bạn có một API trả về danh sách giờ bận của bác sĩ
+          fetch(
+            `/api/unavailable-times?doctor_id=${doctorId}&date=${selectedDate}`
+          )
+            .then((res) => res.json())
+            .then((unavailableTimes) => {
+              document.querySelectorAll(".time-slot").forEach((slot) => {
+                const time = slot.getAttribute("data-time");
+
+                slot.setAttribute("data-datetime", `${selectedDate} ${time}`);
+
+                if (unavailableTimes.includes(time)) {
+                  slot.classList.add("disabled");
+                  slot.classList.remove("selected");
+                } else {
+                  slot.classList.remove("disabled");
+                }
+              });
+            });
+        }
+      }
       // Booking form steps navigation
       document.addEventListener("DOMContentLoaded", function () {
         // Step navigation
@@ -754,6 +933,7 @@
           .addEventListener("click", function () {
             const serviceSelect = document.getElementById("service-select");
             if (serviceSelect.value) {
+              hiddenInput.value = select.value;
               document.getElementById("step1").style.display = "none";
               document.getElementById("step2").style.display = "block";
               currentStep = 1;
@@ -769,24 +949,34 @@
               document.getElementById("service-name").textContent =
                 serviceSelect.options[serviceSelect.selectedIndex].text;
 
+              const dichvu_id =
+                document.getElementById("hidden-dichvu-id").value;
+
               // Update price based on service
-              if (serviceSelect.value === "cleaning") {
-                document.getElementById("summary-price").textContent = "$99";
-              } else if (serviceSelect.value === "whitening") {
-                document.getElementById("summary-price").textContent = "$199";
-              } else if (serviceSelect.value === "filling") {
-                document.getElementById("summary-price").textContent = "$79";
-              } else if (serviceSelect.value === "checkup") {
-                document.getElementById("summary-price").textContent = "$49";
-              } else {
-                document.getElementById("summary-price").textContent =
-                  "Liên hệ";
-              }
+              fetch(`/api/get_price?dichvu_id=${dichvu_id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                  document.getElementById(
+                    "summary-price"
+                  ).textContent = `${data.gia} VND`;
+                });
+              // if (serviceSelect.value === "cleaning") {
+              //   document.getElementById("summary-price").textContent = "$99";
+              // } else if (serviceSelect.value === "whitening") {
+              //   document.getElementById("summary-price").textContent = "$199";
+              // } else if (serviceSelect.value === "filling") {
+              //   document.getElementById("summary-price").textContent = "$79";
+              // } else if (serviceSelect.value === "checkup") {
+              //   document.getElementById("summary-price").textContent = "$49";
+              // } else {
+              //   document.getElementById("summary-price").textContent =
+              //     "Liên hệ";
+              // }
             } else {
               alert("Vui lòng chọn dịch vụ trước khi tiếp tục");
             }
           });
-
+        generateCalendarDays();
         // Next Step 2
         document
           .getElementById("next-step2")
@@ -884,6 +1074,9 @@
               .querySelectorAll(".time-slot")
               .forEach((slot) => slot.classList.remove("selected"));
             this.classList.add("selected");
+            const time = item.getAttribute("data-datetime");
+            const ngayhen = document.getElementById("ngay-hen");
+            ngayhen.value = time;
           });
         });
 

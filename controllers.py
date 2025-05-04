@@ -1,7 +1,7 @@
 import sqlite3
 from dotenv import load_dotenv
 import os
-from flask import g
+from flask import g,request
 
 load_dotenv()
 db_path = os.getenv('db_path')
@@ -104,7 +104,7 @@ def get_dichvu_detail(dichvu_id):
         "bac_si": dict(bacsi)
     }
 def get_all_bacsi_detail():
-    conn = sqlite3.connect('./db/QLPK.db')
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
 
     # 1. Lấy thông tin bacsi
@@ -126,4 +126,22 @@ def get_all_bacsi_detail():
             "thanhtuu": [row["mo_ta"] for row in thanhtuus],
             "kinhnghiems":[row["mota"] for row in kinhnghiem]
         })
+    return result
+
+def laylichbanbacsi():
+    doctor_id = request.args.get('doctor_id')
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Lấy tất cả lịch hẹn sắp tới của bác sĩ
+    cursor.execute("""
+            SELECT thoigianbatdau, thoigianketthuc 
+            FROM lichhen 
+            WHERE bacsi_id = ? AND thoigianbatdau >= datetime('now')
+        """, (doctor_id,))
+    busy_times = cursor.fetchall()
+
+    # Chuyển về dạng list dễ xử lý ở JS
+    result = [{"start": row[0], "end": row[1]} for row in busy_times]
+    conn.close()
     return result
