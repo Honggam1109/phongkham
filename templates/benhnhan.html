@@ -13,7 +13,7 @@
 
 <nav class="navbar navbar-expand-lg fixed-top animate__animated animate__fadeInDown">
   <div class="container">
-    <a class="navbar-brand text-primary d-flex align-items-center" href="#">
+    <a class="navbar-brand text-primary d-flex align-items-center" href="/bacsipage/{{session.get('bacsiid')}}">
       <i class="bi bi-tooth fs-2 me-2"></i>
       <span class="brand-text">DentalCare - Bệnh Nhân</span>
     </a>
@@ -33,7 +33,7 @@
             <li><a class="dropdown-item" href="#profile">Hồ Sơ</a></li>
             <li><a class="dropdown-item" href="#settings">Cài Đặt</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#logout">Đăng Xuất</a></li>
+            <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
           </ul>
         </li>
       </ul>
@@ -75,7 +75,6 @@
             <th>Mã BN</th>
             <th>Họ Tên</th>
             <th>Giới Tính</th>
-            <th>Tuổi</th>
             <th>SĐT</th>
             <th>BHYT</th>
             <th>Lần Cuối Khám</th>
@@ -83,25 +82,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr onclick="showPatientDetail('BN001')">
-            <td>BN001</td>
-            <td>Nguyễn Văn A</td>
-            <td>Nam</td>
-            <td>32</td>
-            <td>0987654321</td>
-            <td>BH123456789</td>
-            <td>15/06/2024</td>
+        {% for benhnhan in data_benhnhan %}
+          <tr onclick="showPatientDetail({{benhnhan['benhnhan_id']}})">
+            <td>{{benhnhan['benhnhan_id']}}</td>
+            <td>{{benhnhan['tenBN']}}</td>
+            <td>{{benhnhan['gioi_tinh']}}</td>
+            <td>{{benhnhan['sdt']}}</td>
+            <td>{{benhnhan['insurance']}}</td>
+            <td>{{benhnhan['lan_kham_cuoi']}}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail('BN001')"><i class="bi bi-eye"></i></button>
-              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient('BN001')"><i class="bi bi-pencil"></i></button>
-              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete('BN001')"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();showPatientDetail({{benhnhan['benhnhan_id']}})"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();editPatient({{benhnhan['benhnhan_id']}})"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();confirmDelete({{benhnhan['benhnhan_id']}})"><i class="bi bi-trash"></i></button>
             </td>
           </tr>
+        {% endfor %}
           <tr onclick="showPatientDetail('BN002')">
             <td>BN002</td>
             <td>Trần Thị B</td>
             <td>Nữ</td>
-            <td>28</td>
             <td>0912345678</td>
             <td>BH987654321</td>
             <td>10/06/2024</td>
@@ -115,7 +114,6 @@
             <td>BN003</td>
             <td>Lê Văn C</td>
             <td>Nam</td>
-            <td>45</td>
             <td>0967891234</td>
             <td>BH456789123</td>
             <td>05/06/2024</td>
@@ -129,7 +127,6 @@
             <td>BN004</td>
             <td>Phạm Thị D</td>
             <td>Nữ</td>
-            <td>38</td>
             <td>0934567891</td>
             <td>BH789123456</td>
             <td>01/06/2024</td>
@@ -555,97 +552,19 @@
   let currentPatientId = null;
   
   // Sample patient data (in a real app, this would come from a database)
-  const patients = {
-    'BN001': {
-      name: 'Nguyễn Văn A',
-      dob: '1992-05-15',
-      gender: 'Nam',
-      bloodType: 'A+',
-      idNumber: '123456789',
-      insurance: 'BH123456789',
-      phone: '0987654321',
-      email: 'nguyenvana@gmail.com',
-      address: '123 Đường ABC, Quận 1, TP.HCM',
-      occupation: 'Kỹ sư',
-      emergencyContact: 'Trần Thị B (Vợ) - 0912345678',
-      medicalHistory: 'Cao huyết áp, Dị ứng Penicillin',
-      allergies: 'Penicillin, Hải sản',
-      currentMeds: 'Thuốc huyết áp',
-      specialNotes: 'Không có',
-      gumStatus: 'Bình thường',
-      cavities: 'Răng 36, 45',
-      wisdomTeeth: 'Đã nhổ 2 răng khôn hàm dưới',
-      currentTreatment: 'Trám răng 36',
-      photo: 'https://via.placeholder.com/200'
-    },
-    'BN002': {
-      name: 'Trần Thị B',
-      dob: '1996-08-22',
-      gender: 'Nữ',
-      bloodType: 'B+',
-      idNumber: '987654321',
-      insurance: 'BH987654321',
-      phone: '0912345678',
-      email: 'tranthib@gmail.com',
-      address: '456 Đường XYZ, Quận 3, TP.HCM',
-      occupation: 'Giáo viên',
-      emergencyContact: 'Nguyễn Văn A (Chồng) - 0987654321',
-      medicalHistory: 'Không có',
-      allergies: 'Không có',
-      currentMeds: 'Không có',
-      specialNotes: 'Nhạy cảm với thuốc tê',
-      gumStatus: 'Viêm nướu nhẹ',
-      cavities: 'Không có',
-      wisdomTeeth: 'Chưa nhổ',
-      currentTreatment: 'Làm sạch răng định kỳ',
-      photo: 'https://via.placeholder.com/200'
-    },
-    'BN003': {
-      name: 'Lê Văn C',
-      dob: '1979-03-10',
-      gender: 'Nam',
-      bloodType: 'O+',
-      idNumber: '456789123',
-      insurance: 'BH456789123',
-      phone: '0967891234',
-      email: 'levanc@gmail.com',
-      address: '789 Đường DEF, Quận 5, TP.HCM',
-      occupation: 'Doanh nhân',
-      emergencyContact: 'Lê Thị D (Vợ) - 0934567891',
-      medicalHistory: 'Tiểu đường',
-      allergies: 'Không có',
-      currentMeds: 'Thuốc tiểu đường',
-      specialNotes: 'Cần kiểm tra đường huyết trước điều trị',
-      gumStatus: 'Viêm nha chu',
-      cavities: 'Răng 17, 26',
-      wisdomTeeth: 'Đã nhổ cả 4 răng khôn',
-      currentTreatment: 'Điều trị nha chu',
-      photo: 'https://via.placeholder.com/200'
-    },
-    'BN004': {
-      name: 'Phạm Thị D',
-      dob: '1986-11-30',
-      gender: 'Nữ',
-      bloodType: 'AB+',
-      idNumber: '789123456',
-      insurance: 'BH789123456',
-      phone: '0934567891',
-      email: 'phamthid@gmail.com',
-      address: '321 Đường GHI, Quận 10, TP.HCM',
-      occupation: 'Bác sĩ',
-      emergencyContact: 'Phạm Văn E (Chồng) - 0967891234',
-      medicalHistory: 'Hen suyễn',
-      allergies: 'Bụi, phấn hoa',
-      currentMeds: 'Thuốc hen',
-      specialNotes: 'Cần thận trọng khi dùng thuốc có codeine',
-      gumStatus: 'Bình thường',
-      cavities: 'Không có',
-      wisdomTeeth: 'Mọc thẳng, không cần nhổ',
-      currentTreatment: 'Niềng răng',
-      photo: 'https://via.placeholder.com/200'
-    }
-  };
-  
+  let patients = {};
+
+  fetch("/api/patients?bacsi_id=1")
+        .then((res) => res.json())
+        .then((data) => {
+          patients = data;
+
+          // Ví dụ: log thử thông tin BN001
+          console.log("BN007:", patients["BN007"]);
+        })
+        .catch((err) => {
+          console.error("Lỗi khi load danh sách bệnh nhân:", err);
+        });
   // Show patient detail
   function showPatientDetail(patientId) {
     currentPatientId = patientId;

@@ -127,7 +127,29 @@ def get_all_bacsi_detail():
             "kinhnghiems":[row["mota"] for row in kinhnghiem]
         })
     return result
+def get_one_bac_si_detail(bacsi_id):
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
 
+    # 1. Lấy thông tin bacsi
+    bacsis = conn.execute("SELECT * FROM bacsi where bacsi_id = ?", (bacsi_id,)).fetchone()
+    # 2. Lấy tag
+    tags = conn.execute("SELECT mo_ta FROM bacsi_tag WHERE bacsi_id = ?", (bacsi_id,)).fetchall()
+    # 3. Lấy thanh tuu
+    thanhtuus = conn.execute("SELECT mo_ta FROM thanhtuu_bacsi WHERE bacsi_id = ? ", (bacsi_id,)).fetchall()
+    # 4. lấy kinh nghiem
+    kinhnghiem = conn.execute("SELECT mota FROM kinhnghiem_bacsi WHERE bacsi_id = ? ", (bacsi_id,)).fetchall()
+    result = {
+        **dict(bacsis),
+        "tags": [row["mo_ta"] for row in tags],
+        "thanhtuu": [row["mo_ta"] for row in thanhtuus],
+        "kinhnghiems": [row["mota"] for row in kinhnghiem]
+        }
+    lichhen = conn.execute("select * from v_lich_hen_benh_nhan where bacsi_id = ?",(bacsi_id,)).fetchall()
+    lh = []
+    for l in lichhen:
+        lh.append(dict(l))
+    return result, lh
 def laylichbanbacsi():
     doctor_id = request.args.get('doctor_id')
     conn = sqlite3.connect(db_path)
@@ -145,3 +167,46 @@ def laylichbanbacsi():
     result = [{"start": row[0], "end": row[1]} for row in busy_times]
     conn.close()
     return result
+def insertlichhen(data):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Bắt đầu transaction
+    conn.execute("BEGIN")
+
+    # 1. Thêm bệnh nhân mới
+    cursor.execute("""
+                INSERT INTO benhnhan (tenBN, gioi_tinh, bacsi_id, lan_kham_cuoi, ghi_chu, sdt, email, ngaysinh)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+        data['hoten'],
+        data['gender'],
+        data['doctor'],
+        data['select-date'],
+        data['ghichu'],
+        data['sdt'],
+        data['mail'],
+        data['ngaysinh']
+    ))
+
+    benhnhan_id = cursor.lastrowid
+
+    # 2. Tạo lịch hẹn
+    cursor.execute("""
+                INSERT INTO lichhen (bacsi_id, benhnhan_id, dichvu_id, thoigianbatdau, thoigianketthuc)
+                VALUES (?, ?, ?, ?, datetime(?, '+1 hour'))
+            """, (
+        data['doctor'],
+        benhnhan_id,
+        data['dichvu_id'],
+        data['select-date'],
+        data['select-date']
+    ))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+a,b = get_one_bac_si_detail(1)
+print(a)
+print(b)

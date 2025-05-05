@@ -471,14 +471,19 @@
             <div class="booking-card" id="step4" style="display: none">
               <h3 class="booking-card-title">4. Thông Tin Bệnh Nhân</h3>
 
-              <form id="booking-form" action="/dat-lich" method="post">
+              <form id="booking-form" action="/datlichmoi" method="POST">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label"
                         >Họ và tên <span class="text-danger">*</span></label
                       >
-                      <input type="text" class="form-control" required />
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="hoten"
+                        required
+                      />
                     </div>
                   </div>
                   <input type="hidden" id="selected-doctor" name="doctor" />
@@ -490,7 +495,12 @@
                       <label class="form-label"
                         >Số điện thoại <span class="text-danger">*</span></label
                       >
-                      <input type="tel" class="form-control" required />
+                      <input
+                        type="tel"
+                        class="form-control"
+                        name="sdt"
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -499,12 +509,17 @@
                   <label class="form-label"
                     >Email <span class="text-danger">*</span></label
                   >
-                  <input type="email" class="form-control" required />
+                  <input
+                    type="email"
+                    name="mail"
+                    class="form-control"
+                    required
+                  />
                 </div>
 
                 <div class="mb-3">
                   <label class="form-label">Ngày sinh</label>
-                  <input type="date" class="form-control" />
+                  <input type="date" name="ngaysinh" class="form-control" />
                 </div>
 
                 <div class="mb-3">
@@ -516,7 +531,7 @@
                         type="radio"
                         name="gender"
                         id="male"
-                        value="male"
+                        value="nam"
                       />
                       <label class="form-check-label" for="male">Nam</label>
                     </div>
@@ -526,7 +541,7 @@
                         type="radio"
                         name="gender"
                         id="female"
-                        value="female"
+                        value="nữ"
                       />
                       <label class="form-check-label" for="female">Nữ</label>
                     </div>
@@ -536,7 +551,7 @@
                         type="radio"
                         name="gender"
                         id="other"
-                        value="other"
+                        value="khác"
                       />
                       <label class="form-check-label" for="other">Khác</label>
                     </div>
@@ -548,6 +563,7 @@
                   <textarea
                     class="form-control"
                     rows="3"
+                    name="ghichu"
                     placeholder="Vui lòng mô tả ngắn gọn tình trạng răng miệng hiện tại của bạn..."
                   ></textarea>
                 </div>
@@ -1084,7 +1100,6 @@
         document
           .getElementById("booking-form")
           .addEventListener("submit", function (e) {
-            e.preventDefault();
             alert(
               "Đặt lịch thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất."
             );

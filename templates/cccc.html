@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    let patients = {};
+
+  fetch("/api/patients?bacsi_id=1")
+    .then((res) => res.json())
+    .then((data) => {
+      patients = data;
+
+      // Ví dụ: log thử thông tin BN001
+      console.log("BN001:", patients["BN007"]);
+    })
+    .catch((err) => {
+      console.error("Lỗi khi load danh sách bệnh nhân:", err);
+    });
+</script>
+</body>
+</html>

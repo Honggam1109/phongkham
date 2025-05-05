@@ -23,17 +23,17 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item"><a class="nav-link" href="#appointments">Lịch Hẹn</a></li>
-        <li class="nav-item"><a class="nav-link" href="#patients">Bệnh Nhân</a></li>
+        <li class="nav-item"><a class="nav-link" href="/benhnhan/{{bacsi_data.bacsi_id}}">Bệnh Nhân</a></li>
         <li class="nav-item"><a class="nav-link" href="#profile">Hồ Sơ</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle fs-5"></i> Tài Khoản
+            <i class="bi bi-person-circle fs-5"></i> {{bacsi_data.ten}}
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#profile">Hồ Sơ</a></li>
             <li><a class="dropdown-item" href="#settings">Cài Đặt</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#logout">Đăng Xuất</a></li>
+            <li><a class="dropdown-item" href="/logout">Đăng Xuất</a></li>
           </ul>
         </li>
       </ul>
@@ -59,27 +59,16 @@
   <div class="container">
     <h2 class="text-center mb-5">Lịch Hẹn Hôm Nay</h2>
     <div class="row g-4">
+      {% for lichhen in lichhen_data %}
       <div class="col-md-4">
         <div class="service-card">
-          <h3>Bệnh Nhân: Nguyễn Văn A</h3>
-          <p>Dịch Vụ: Làm Sạch Răng</p>
-          <p>Thời Gian: 10:00 - 11:00</p>
+          <h3>Bệnh Nhân: {{lichhen.tenBN}}</h3>
+          <p>Dịch Vụ: {{lichhen.tendichvu}}</p>
+          <p>Ngày:{{lichhen.ngay_hen}} </p>
+          <p>Thời Gian: {{lichhen.gio_batdau}} - {{lichhen.gio_ketthuc}}</p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="service-card">
-          <h3>Bệnh Nhân: Trần Thị B</h3>
-          <p>Dịch Vụ: Tẩy Trắng Răng</p>
-          <p>Thời Gian: 14:00 - 15:00</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card">
-          <h3>Bệnh Nhân: Lê Văn C</h3>
-          <p>Dịch Vụ: Kiểm Tra Răng</p>
-          <p>Thời Gian: 16:00 - 17:00</p>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -88,13 +77,15 @@
   <div class="container">
     <h2 class="text-center mb-5">Quản Lý Bệnh Nhân</h2>
     <div class="row g-4">
+      {% for lichhen in lichhen_data %}
       <div class="col-md-4">
         <div class="service-card">
-          <h3>Nguyễn Văn A</h3>
-          <p>Lần Khám Cuối: 01/01/2024</p>
-          <p>Ghi Chú: Cần theo dõi sâu răng</p>
+          <h3>{{lichhen.tenBN}}</h3>
+          <p>Lần Khám Cuối: {{lichhen.ngay_hen}}</p>
+          <p>Ghi Chú: {{lichhen.ghi_chu}}</p>
         </div>
       </div>
+      {% endfor %}
       <div class="col-md-4">
         <div class="service-card">
           <h3>Trần Thị B</h3>
