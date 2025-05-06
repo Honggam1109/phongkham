@@ -178,7 +178,7 @@
               <i class="bi bi-upload"></i> Tải lên ảnh
             </button>
             <h4 id="patientName">Nguyễn Văn A</h4>
-            <p class="text-muted" id="patientCode">BN001</p>
+            <p class="text-muted" id="patientCode">1</p>
             <div class="d-grid gap-2">
               <button class="btn btn-primary" onclick="editPatient(currentPatientId)"><i class="bi bi-pencil"></i> Chỉnh sửa</button>
               <button class="btn btn-outline-danger" onclick="confirmDelete(currentPatientId)"><i class="bi bi-trash"></i> Xóa bệnh nhân</button>
@@ -350,24 +350,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="patientForm">
-          <input type="hidden" id="patientId">
-          
+        <form id="patientForm" action="/patientEdit" method="POST">
+          <input type="hidden" id="patientId" name="patientId">
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formName" class="form-label">Họ và Tên *</label>
-              <input type="text" class="form-control" id="formName" required>
+              <input type="text" class="form-control" id="formName" name="formName" required>
             </div>
             <div class="col-md-6">
               <label for="formDob" class="form-label">Ngày Sinh *</label>
-              <input type="date" class="form-control" id="formDob" required>
+              <input type="date" class="form-control" id="formDob" name="formDob" required>
             </div>
           </div>
-          
+
           <div class="row mb-3">
             <div class="col-md-4">
               <label for="formGender" class="form-label">Giới Tính *</label>
-              <select class="form-select" id="formGender" required>
+              <select class="form-select" id="formGender" name="formGender" required>
                 <option value="">Chọn giới tính</option>
                 <option value="Nam">Nam</option>
                 <option value="Nữ">Nữ</option>
@@ -376,7 +376,7 @@
             </div>
             <div class="col-md-4">
               <label for="formBloodType" class="form-label">Nhóm Máu</label>
-              <select class="form-select" id="formBloodType">
+              <select class="form-select" id="formBloodType" name="formBloodType">
                 <option value="">Không rõ</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -390,74 +390,74 @@
             </div>
             <div class="col-md-4">
               <label for="formIdNumber" class="form-label">CMND/CCCD</label>
-              <input type="text" class="form-control" id="formIdNumber">
+              <input type="text" class="form-control" id="formIdNumber" name="formIdNumber">
             </div>
           </div>
-          
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formPhone" class="form-label">Số Điện Thoại *</label>
-              <input type="tel" class="form-control" id="formPhone" required>
+              <input type="tel" class="form-control" id="formPhone" name="formPhone" required>
             </div>
             <div class="col-md-6">
               <label for="formEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="formEmail">
+              <input type="email" class="form-control" id="formEmail" name="formEmail">
             </div>
           </div>
-          
+
           <div class="mb-3">
             <label for="formAddress" class="form-label">Địa Chỉ</label>
-            <textarea class="form-control" id="formAddress" rows="2"></textarea>
+            <textarea class="form-control" id="formAddress" name="formAddress" rows="2"></textarea>
           </div>
-          
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formOccupation" class="form-label">Nghề Nghiệp</label>
-              <input type="text" class="form-control" id="formOccupation">
+              <input type="text" class="form-control" id="formOccupation" name="formOccupation">
             </div>
             <div class="col-md-6">
               <label for="formInsurance" class="form-label">Số BHYT</label>
-              <input type="text" class="form-control" id="formInsurance">
+              <input type="text" class="form-control" id="formInsurance" name="formInsurance">
             </div>
           </div>
-          
+
           <div class="mb-3">
             <label for="formEmergencyContact" class="form-label">Người Liên Hệ Khẩn Cấp</label>
-            <input type="text" class="form-control" id="formEmergencyContact" placeholder="Tên và mối quan hệ">
+            <input type="text" class="form-control" id="formEmergencyContact" name="formEmergencyContact" placeholder="Tên và mối quan hệ">
           </div>
-          
+
           <div class="mb-3">
             <label for="formEmergencyPhone" class="form-label">SĐT Người Liên Hệ Khẩn Cấp</label>
-            <input type="tel" class="form-control" id="formEmergencyPhone">
+            <input type="tel" class="form-control" id="formEmergencyPhone" name="formEmergencyPhone">
           </div>
-          
+
           <h5 class="mt-4">Thông Tin Y Tế</h5>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formMedicalHistory" class="form-label">Tiền Sử Bệnh</label>
-              <textarea class="form-control" id="formMedicalHistory" rows="2" placeholder="Các bệnh đã mắc..."></textarea>
+              <textarea class="form-control" id="formMedicalHistory" name="formMedicalHistory" rows="2" placeholder="Các bệnh đã mắc..."></textarea>
             </div>
             <div class="col-md-6">
               <label for="formAllergies" class="form-label">Dị Ứng</label>
-              <textarea class="form-control" id="formAllergies" rows="2" placeholder="Các loại dị ứng..."></textarea>
+              <textarea class="form-control" id="formAllergies" name="formAllergies" rows="2" placeholder="Các loại dị ứng..."></textarea>
             </div>
           </div>
-          
+
           <div class="mb-3">
             <label for="formCurrentMeds" class="form-label">Thuốc Đang Dùng</label>
-            <textarea class="form-control" id="formCurrentMeds" rows="2" placeholder="Các loại thuốc đang sử dụng..."></textarea>
+            <textarea class="form-control" id="formCurrentMeds" name="formCurrentMeds" rows="2" placeholder="Các loại thuốc đang sử dụng..."></textarea>
           </div>
-          
+
           <div class="mb-3">
             <label for="formSpecialNotes" class="form-label">Ghi Chú Đặc Biệt</label>
-            <textarea class="form-control" id="formSpecialNotes" rows="2"></textarea>
+            <textarea class="form-control" id="formSpecialNotes" name="formSpecialNotes" rows="2"></textarea>
           </div>
-          
+
           <h5 class="mt-4">Hồ Sơ Răng Miệng</h5>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formGumStatus" class="form-label">Tình Trạng Nướu</label>
-              <select class="form-select" id="formGumStatus">
+              <select class="form-select" id="formGumStatus" name="formGumStatus">
                 <option value="">Chọn tình trạng</option>
                 <option value="Bình thường">Bình thường</option>
                 <option value="Viêm nướu nhẹ">Viêm nướu nhẹ</option>
@@ -467,25 +467,24 @@
             </div>
             <div class="col-md-6">
               <label for="formCavities" class="form-label">Sâu Răng (nếu có)</label>
-              <input type="text" class="form-control" id="formCavities" placeholder="Vị trí răng sâu...">
+              <input type="text" class="form-control" id="formCavities" name="formCavities" placeholder="Vị trí răng sâu...">
             </div>
           </div>
-          
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="formWisdomTeeth" class="form-label">Răng Khôn</label>
-              <input type="text" class="form-control" id="formWisdomTeeth" placeholder="Tình trạng răng khôn...">
+              <input type="text" class="form-control" id="formWisdomTeeth" name="formWisdomTeeth" placeholder="Tình trạng răng khôn...">
             </div>
             <div class="col-md-6">
               <label for="formCurrentTreatment" class="form-label">Điều Trị Hiện Tại</label>
-              <input type="text" class="form-control" id="formCurrentTreatment" placeholder="Các điều trị đang thực hiện...">
+              <input type="text" class="form-control" id="formCurrentTreatment" name="formCurrentTreatment" placeholder="Các điều trị đang thực hiện...">
             </div>
           </div>
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary" id="savePatientBtn">Lưu Thông Tin</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-primary" id="savePatientBtn">Lưu Thông Tin</button>
       </div>
     </div>
   </div>
@@ -504,8 +503,12 @@
         <p class="text-danger">Hành động này không thể hoàn tác!</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+        <form action="/deletePatient" method="POST">
+          <input type="hidden" id="patientId2" name="patientId">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-danger" id="confirmDeleteBtn" >Xóa</button>
+        </form>
+
       </div>
     </div>
   </div>
@@ -554,7 +557,7 @@
   // Sample patient data (in a real app, this would come from a database)
   let patients = {};
 
-  fetch("/api/patients?bacsi_id=1")
+  fetch("/api/patients?bacsi_id={{session.get('bacsiid')}}")
         .then((res) => res.json())
         .then((data) => {
           patients = data;
@@ -572,6 +575,7 @@
     
     // Set basic info
     document.getElementById('patientName').textContent = patient.name;
+    document.getElementById('patientId2').value = patientId;
     document.getElementById('patientCode').textContent = patientId;
     document.getElementById('patientPhoto').src = patient.photo;
     
@@ -601,7 +605,11 @@
     const modal = new bootstrap.Modal(document.getElementById('patientDetailModal'));
     modal.show();
   }
-  
+  //reset patient id
+  function resetPatientId(){
+   document.getElementById('patientId').value  = '';
+   document.getElementById('patientId2').value = '';
+  }
   // Edit patient
   function editPatient(patientId) {
     currentPatientId = patientId;

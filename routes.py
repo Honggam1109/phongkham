@@ -66,6 +66,70 @@ def benhnhan(bacsiid):
     rows = cursor.fetchall()
     conn.close()
     return render_template('benhnhan.html',data_benhnhan = rows)
+@main_bp.route("/patientEdit", methods=["POST"])
+def patient_edit():
+    form = request.form
+    patient_id = form.get("patientId")
+
+    data = {
+        "tenBN": form.get("formName"),
+        "ngaysinh": form.get("formDob"),
+        "gioi_tinh": form.get("formGender"),
+        "blood_type": form.get("formBloodType"),
+        "id_number": form.get("formIdNumber"),
+        "sdt": form.get("formPhone"),
+        "email": form.get("formEmail"),
+        "address": form.get("formAddress"),
+        "occupation": form.get("formOccupation"),
+        "insurance": form.get("formInsurance"),
+        "emergency_contact": f'{form.get("formEmergencyContact")} - {form.get("formEmergencyPhone")}',
+        "medical_history": form.get("formMedicalHistory"),
+        "allergies": form.get("formAllergies"),
+        "current_meds": form.get("formCurrentMeds"),
+        "special_notes": form.get("formSpecialNotes"),
+        "gum_status": form.get("formGumStatus"),
+        "cavities": form.get("formCavities"),
+        "wisdom_teeth": form.get("formWisdomTeeth"),
+        "current_treatment": form.get("formCurrentTreatment"),
+        "photo": form.get("photo", "https://via.placeholder.com/200"),  # optional
+        "bacsi_id": session.get('bacsiid')  # hoặc lấy từ session / context
+    }
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    if patient_id:  # Cập nhật
+        set_clause = ", ".join([f"{key} = ?" for key in data.keys()])
+        query = f"""
+            UPDATE benhnhan SET {set_clause}
+            WHERE benhnhan_id = ?
+        """
+        cursor.execute(query, list(data.values()) + [patient_id])
+    else:  # Thêm mới
+        columns = ", ".join(data.keys())
+        placeholders = ", ".join(["?"] * len(data))
+        query = f"""
+            INSERT INTO benhnhan ({columns})
+            VALUES ({placeholders})
+        """
+        cursor.execute(query, list(data.values()))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(f"/benhnhan/{session.get('bacsiid')}")  # hoặc return jsonify({"success": True})
+@main_bp.route('/deletePatient',methods=["POST"])
+def delete_patient():
+    form = request.form
+    patient_id = form.get("patientId")
+    conn = get_db()
+    cursor = conn.cursor()
+    result = cursor.execute('DELETE FROM lichhen where benhnhan_id = ?',(patient_id,))
+    tes = cursor.execute('DELETE FROM benhnhan where benhnhan_id = ?',(patient_id,))
+    conn.commit()
+    conn.close()
+    return redirect(f'benhnhan/{session.get('bacsiid')}')
+
 @main_bp.route('/login',methods=['POST','GET'])
 def login():
     if request.method == 'POST':
